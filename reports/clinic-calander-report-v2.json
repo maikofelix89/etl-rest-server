@@ -50,7 +50,7 @@
             },
             {
                 "name": "encounterIds",
-                "defaultValue": 0
+                "defaultValue": -1
             },
             {
                 "name": "visitTypeIds",
@@ -174,7 +174,7 @@
             },
             {
                 "name": "encounterIds",
-                "defaultValue": 0
+                "defaultValue": -1
             },
             {
                 "name": "visitTypeIds",
@@ -374,7 +374,7 @@
             },
             {
                 "name": "encounterIds",
-                "defaultValue": 0
+                "defaultValue": -1
             },
             {
                 "name": "visitTypeIds",
