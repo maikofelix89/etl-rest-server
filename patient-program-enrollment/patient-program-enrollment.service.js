@@ -299,6 +299,7 @@ function resolveProgramVisitTypeEncounterUuidsParamsToIds(request){
                         else if (programTypeUuid.length === 0 && visitTypeUuid.length === 0 && encounterTypeUuid.length === 0) {
                                // else just load everything
                               console.log('programTypeUuid.length === 0 && visitTypeUuid.length === 0 && encounterTypeUuid.length === 0');
+                              /*
 
                               _.each(programsConfig, (program, index) => {
                                           var programUUid = index;
@@ -319,6 +320,8 @@ function resolveProgramVisitTypeEncounterUuidsParamsToIds(request){
 
 
                               });
+
+                              */
 
                         }
 
