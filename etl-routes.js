@@ -2539,6 +2539,8 @@ module.exports = function () {
                 },
                 handler: function (request, reply) {
 
+                    console.log('Request', request.query);
+
                     if (request.params.sub === 'patientList' &&
                         !authorizer.hasPrivilege(privileges.canViewPatient)) {
                         return reply(Boom.forbidden('Unauthorized'));
