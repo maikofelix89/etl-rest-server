@@ -23,6 +23,9 @@ var motd = require('./dao/motd_notification/motd_notification-dao');
 var patientProgramService = require('./programs/patient-program-base.service.js');
 var resolveClinicDashboardFilterParams = require('./resolve-program-visit-encounter-Ids/resolve-program-visit-encounter-Ids');
 var departmentProgramsService = require('./departments/departments-programs.service');
+var enrollmentService = require('./service/enrollment.service');
+var resolveLocationUuidToId = require('./location/resolve-location-uuid-to-id');
+var resolveProgramEnrollmentFilterParams = require('./resolve-program-visit-encounter-Ids/resolve-program-visit-encounter-idsv2');
 import {
     MonthlyScheduleService
 } from './service/monthly-schedule-service';
@@ -3179,6 +3182,112 @@ module.exports = function () {
                        
                     }
                 }
+            }
+        },
+        {
+            method: 'GET',
+            path: '/etl/patient-program-enrollments',
+            config: {
+                plugins: {
+                    'hapiAuthorization': {
+                        role: privileges.canViewClinicDashBoard
+                    },
+                    'openmrsLocationAuthorizer': {
+                        locationParameter: [{
+                            type: 'query', //can be in either query or params so you have to specify
+                            name: 'locationUuids' //name of the location parameter
+                        }]
+                    }
+                },
+                handler: function (request, reply) {
+                    console.log('Request Params', request.query);
+                        resolveLocationUuidToId.resolveLocationUuidsParamsToIds(request.query)
+                        .then((result) => {
+
+                            let locationIds = result;
+                            console.log('Location Ids', locationIds);
+                            request.query.locations = locationIds;
+
+                            resolveProgramEnrollmentFilterParams.resolveProgramVisitTypeEncounterUuidsParamsToIds(request.query)
+                            .then((resolve) => {
+                               
+                                  let programTypeIds = resolve.programTypeIds;
+                                  request.query.programTypeIds = programTypeIds;
+                                  console.log('Program Types', programTypeIds );
+                                  enrollmentService.getActiveProgramEnrollmentSummary(request.query)
+                                    .then((result)=> {
+                                      reply(result);
+
+                                    }).catch((error)=> {
+
+                                      reply(error);
+
+                                    });
+                            }).catch((error) => {
+                                console.log(error);
+                            });
+
+                        })
+                        .catch((error)=>{
+                            console.log(error);
+                        });
+                },
+                description: 'Get enrollment summary details based on location and time filters',
+                notes: 'Returns a list of active patients enrolled',
+                tags: ['api'],
+            }
+        },
+        {
+            method: 'GET',
+            path: '/etl/program-enrollment/patient-list',
+            config: {
+                plugins: {
+                    'hapiAuthorization': {
+                        role: privileges.canViewClinicDashBoard
+                    },
+                    'openmrsLocationAuthorizer': {
+                        locationParameter: [{
+                            type: 'query', //can be in either query or params so you have to specify
+                            name: 'locationUuids' //name of the location parameter
+                        }]
+                    }
+                },
+                handler: function (request, reply) {
+                    console.log('Request Params', request.query);
+                        resolveLocationUuidToId.resolveLocationUuidsParamsToIds(request.query)
+                        .then((result) => {
+
+                            let locationIds = result;
+                            console.log('Location Ids', locationIds);
+                            request.query.locations = locationIds;
+
+                            resolveProgramEnrollmentFilterParams.resolveProgramVisitTypeEncounterUuidsParamsToIds(request.query)
+                            .then((resolve) => {
+                               
+                                  let programTypeIds = resolve.programTypeIds;
+                                  request.query.programTypeIds = programTypeIds;
+                                  console.log('Program Types', programTypeIds );
+                                  enrollmentService.getActiveProgramEnrollmentsPatientList(request.query)
+                                    .then((result)=> {
+                                      reply(result);
+
+                                    }).catch((error)=> {
+
+                                      reply(error);
+
+                                    });
+                            }).catch((error) => {
+                                console.log(error);
+                            });
+
+                        })
+                        .catch((error)=>{
+                            console.log(error);
+                        });
+                },
+                description: 'Get a list of patients enrolled in a program in a location in a certain period',
+                notes: 'Returns a list of active patients enrolled',
+                tags: ['api'],
             }
         }
     ];
