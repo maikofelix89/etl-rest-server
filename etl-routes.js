@@ -75,7 +75,9 @@ import {
 
 import {
     Moh731Report
-} from './app/reporting-framework/hiv/moh-731.report'
+} from './app/reporting-framework/hiv/moh-731.report';
+
+var dashboardService = require('./dash-board/dashboards.service');
 
 module.exports = function () {
 
@@ -3330,7 +3332,29 @@ module.exports = function () {
                 notes: 'Returns a list of active patients enrolled',
                 tags: ['api'],
             }
-        }
+        },
+        {
+            method: 'GET',
+            path: '/etl/dashboards',
+            config: {
+                auth: 'simple',
+                plugins: {},
+                handler: function (request, reply) {
+                    reply(dashboardService.getDashboard());
+                },
+                description: 'Get a list of Departments and their programs ',
+                notes: 'Returns a  list of Departments and their programs',
+                tags: ['api'],
+                validate: {
+                    options: {
+                        allowUnknown: true
+                    },
+                    params: {
+    
+                    }
+                }
+            }
+        },
     ];
 
     return routes;
