@@ -21,7 +21,7 @@ var etlHelpers = require('./etl-helpers.js');
 var crypto = require('crypto');
 var motd = require('./dao/motd_notification/motd_notification-dao');
 var patientProgramService = require('./programs/patient-program-base.service.js');
-var resolveClinicDashboardFilterParams = require('./resolve-program-visit-encounter-Ids/resolve-program-visit-encounter-Ids');
+var resolveClinicDashboardFilterParams = require('./resolve-program-visit-encounter-Ids/resolve-program-visit-encounter-idsv2');
 var departmentProgramsService = require('./departments/departments-programs.service');
 var enrollmentService = require('./service/enrollment.service');
 var resolveLocationUuidToId = require('./location/resolve-location-uuid-to-id');
@@ -317,6 +317,9 @@ module.exports = function () {
                                             request.query.encounterIds = encounterIds;
                                             request.query.visitTypeIds = visitTypeIds;
                                             request.query.programTypeIds = programTypeIds;
+                                            console.log('Encounter Ids', encounterIds);
+                                            console.log('Visit Type Ids', visitTypeIds);
+                                            console.log('Program Type Ids', programTypeIds);
                                             let compineRequestParams = Object.assign({}, request.query, request.params);
                                             let reportParams = etlHelpers.getReportParams('daily-appointments', ['startDate', 'locations','encounterIds','visitTypeIds', 'programTypeIds' ,'groupBy'], compineRequestParams);
 

@@ -122,7 +122,10 @@ function resolveProgramVisitTypeEncounterUuidsParamsToIds(request){
          var encounterTypeUuid = request.encounterType;
       }
 
-      // console.log('Program Type', decodedUrl);
+      console.log('Program Type', programTypeUuid);
+      console.log('Visit Type', visitTypeUuid);
+      console.log('Encounter Type', encounterTypeUuid);
+
 
        return new Promise(function (resolve, reject) {
 
@@ -142,9 +145,10 @@ function resolveProgramVisitTypeEncounterUuidsParamsToIds(request){
                         var encounterMap = programVisitTypeEncounterMap.encounterMap;
                         let programDefined = typeof programTypeUuid;
                         let visittypeDefined = typeof visitTypeUuid;
-                        let encounterDefined = typeof encounterUuid; 
+                        let encounterDefined = typeof encounterTypeUuid; 
+                        console.log('encounterDefined', encounterDefined);
                         if (programDefined !== 'undefined'  && visittypeDefined === 'undefined' && encounterDefined === 'undefined') {
-                              // console.log('programTypeUuid.length > 0 && visitTypeUuid.length === 0 && encounterTypeUuid.length === 0');
+                              console.log('programTypeUuid.length > 0 && visitTypeUuid.length === 0 && encounterTypeUuid.length === 0');
                               _.each(programsConfig, (program, index) => {
                                     if (_.includes(programTypeUuid, index) === true) {
                                           var programUUid = index;
@@ -194,7 +198,7 @@ function resolveProgramVisitTypeEncounterUuidsParamsToIds(request){
                         }
 
                         else if (programDefined !== 'undefined' && visittypeDefined !== 'undefined' && encounterDefined === 'undefined') {
-                              // console.log('programTypeUuid.length > 0 && visitTypeUuid.length > 0 && encounterTypeUuid.length === 0');
+                              console.log('programTypeUuid.length > 0 && visitTypeUuid.length > 0 && encounterTypeUuid.length === 0');
                               _.each(programsConfig, (program, index) => {
                                     if (_.includes(programTypeUuid, index) === true) {
                                           var programUUid = index;
@@ -240,8 +244,8 @@ function resolveProgramVisitTypeEncounterUuidsParamsToIds(request){
 
 
                         }
-                        else if (programDefined !== 'undefined' && visittypeDefined !== 'undefined' && encounterDefined !== 'Undefined') {
-                              // console.log('programTypeUuid.length > 0 && visitTypeUuid.length > 0 && encounterTypeUuid.length > 0');
+                        else if (programDefined !== 'undefined' && visittypeDefined !== 'undefined' && encounterDefined !== 'undefined') {
+                              console.log('programTypeUuid.length > 0 && visitTypeUuid.length > 0 && encounterTypeUuid.length > 0');
                               _.each(programsConfig, (program, index) => {
                                     if (_.includes(programTypeUuid, index) === true) {
                                           var programUUid = index;
@@ -294,7 +298,7 @@ function resolveProgramVisitTypeEncounterUuidsParamsToIds(request){
                         }
                         else if (programDefined === 'undefined' && visittypeDefined === 'undefined' && encounterDefined === 'undefined') {
                                // else just load everything
-                               //console.log('programTypeUuid.length == 0 && visitTypeUuid.length == 0 && encounterTypeUuid.length == 0');
+                               console.log('programTypeUuid.length == 0 && visitTypeUuid.length == 0 && encounterTypeUuid.length == 0');
 
                               _.each(programsConfig, (program, index) => {
                                           var programUUid = index;
@@ -333,7 +337,7 @@ function resolveProgramVisitTypeEncounterUuidsParamsToIds(request){
 
                               resolveCount++;
 
-                              // console.log('Resolved Ids',  resolvedProgramVisitEncounterTypes);
+                              console.log('Resolved Ids',  resolvedProgramVisitEncounterTypes);
 
 
                              checkResolveCount();
