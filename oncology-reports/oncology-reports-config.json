@@ -5,7 +5,7 @@
       {
         "name": "B1. Breast screening numbers",
         "type": "breast-cancer-screening-numbers",
-        "description": "Breast screening numbers contains the following indicators - total breast screened,normal breast screened,abnormal breast screening findings,breast call rate, biopsy within 2 weeks,clients staged before treatment and total referred for follow up"
+        "description": "Breast screening numbers contains the following indicators - total breast screened, normal breast screening findings, abnormal breast screening findings, normal breast call rate, abnormal breast call rate, diagnostic interval and clients staged before treatment"
       }
     ]
 },
@@ -16,7 +16,7 @@
     {
       "name": "C1. Cervical screening numbers",
       "type": "cervical-cancer-screening-numbers",
-      "description": "Cervical screening numbers contains the following indicators - total cervical screened,normal cervical screened,abnormal cervical screening findings,cervical call rate, biopsy within 2 weeks,clients staged before treatment and total referred for follow up"
+      "description": "Cervical screening numbers contains the following indicators - total cervical screened, normal cervical screened, abnormal cervical screened, normal cervical call rate, abnormal cervical call rate, diagnostic interval and clients staged before treatment"
     }
   ]
 }
