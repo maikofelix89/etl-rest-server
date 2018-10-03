@@ -123,7 +123,7 @@
         ]
       },
       {
-        "uuid": "d4ac2aa5-2899-42fb-b08a-d40161815b48",
+        "uuid": "d164c76c-cc91-4ac2-89e9-ab7c29152ee0",
         "name": "Adult HIV Return Visit ",
         "allowedIf": "age >= 20 && programLocation === intendedVisitLocationUuid && !isFirstAMPATHHIVVisit",
         "message": "Patient has to be 20yrs and above, in the location he enrolled into the HIV Care and Treatment program  and there must be a prior clinical encounter.",
@@ -139,6 +139,10 @@
           {
             "uuid": "8d5b2be0-c2cc-11de-8d13-0010c6dffd0f",
             "display": "ADULTRETURN"
+          },
+          {
+            "uuid": "ada3f422-7221-40e5-9658-eb4ff8a9210a",
+            "display": "RETURNVISIT"
           },
           {
             "uuid": "df55584c-1350-11df-a1f1-0026b9348838",
@@ -232,6 +236,10 @@
             "display": "PEDSRETURN"
           },
           {
+            "uuid": "ada3f422-7221-40e5-9658-eb4ff8a9210a",
+            "display": "RETURNVISIT"
+          },
+          {
             "uuid": "df55584c-1350-11df-a1f1-0026b9348838",
             "display": "DEATHREPORT"
           },
@@ -311,6 +319,10 @@
         "allowedIf": "age >= 10 && age <= 24 && programLocation === intendedVisitLocationUuid && !isFirstAMPATHHIVVisit",
         "message": "Patient has to between 10 and 24yrs , in the location he enrolled into the HIV Care and Treatment program and must have a prior clinical encounter",
         "encounterTypes": [
+          {
+            "uuid": "ada3f422-7221-40e5-9658-eb4ff8a9210a",
+            "display": "RETURNVISIT"
+          },
           {
             "uuid": "a44ad5e2-b3ec-42e7-8cfa-8ba3dbcf5ed7",
             "display": "HIVTRIAGE"
