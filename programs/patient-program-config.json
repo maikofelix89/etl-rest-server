@@ -1570,6 +1570,10 @@
             "display": "HIVTRIAGE"
           },
           {
+            "uuid": "8d5b2be0-c2cc-11de-8d13-0010c6dffd0f",
+            "display": "ADULTRETURN"
+          },
+          {
             "uuid": "cbe2d31d-2201-44ce-b52e-fbd5dc7cff33",
             "display": "TRANSFERENCOUNTER"
           },
