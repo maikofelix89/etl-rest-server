@@ -1284,6 +1284,22 @@
               "label": "Exposed"
             }
           ]
+        },
+        {
+          "qtype": "enrollToGroup",
+          "name": "Enroll to community group",
+          "enrollIf": "",
+          "value": "",
+          "answers": [
+            {
+              "value": true,
+              "label": "Yes"
+            },
+            {
+              "value": false,
+              "label": "No"
+            }
+          ]
         }
       ]
     },
@@ -1303,6 +1319,17 @@
       "NON-AMPATH": ["9765992c-6279-46cc-915b-452a73e7dab5"]
     },
     "visitTypes": [
+      {
+        "uuid": "0d608b80-1cb5-4c85-835a-29072683ca27",
+        "name": "DC Community Visit",
+        "groupVisit": true,
+        "encounterTypes": [
+          {
+            "uuid": "0ea8bfc4-fd3b-40bb-bb34-d5c5d9199c96",
+            "display": "DIFFERENTIATEDCARECLINICIAN"
+          }
+        ]
+       },
       {
         "uuid": "9bf3fadd-4938-40fa-a093-4e01bf197876",
         "name": "Differentiated Care Clinical Visit ",
