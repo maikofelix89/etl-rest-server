@@ -31,7 +31,7 @@
             "alias": "encounter_datetime",
             "expressionType": "simple_expression",
             "expressionOptions": {
-                "expression": "date_format(bcsd.encounter_datetime, '%m-%Y')"
+                "expression": "date_format(bcsd.encounter_datetime, '%d-%m-%Y')"
             }
         },
         {
@@ -87,8 +87,7 @@
         "groupParam": "groupByParam",
         "columns": [
             "location_id",
-            "year(bcsd.encounter_datetime)",
-            "month(bcsd.encounter_datetime)"
+            "DATE(bcsd.encounter_datetime)"
         ],
         "excludeParam": "excludeParam"
     },
