@@ -8,11 +8,19 @@ import {
 import {
     PatientlistMysqlReport
 } from '../app/reporting-framework/patientlist-mysql.report';
+import {
+    IndicatorDefinitionService
+} from '../app/reporting-framework/hiv/indicator-definition.service';
+import * as hivDefinitions from '../app/reporting-framework/hiv/indicator-definitions.json';
 
 export class hivComparativeOverviewService {
 
     getAggregateReport(reportParams) {
+        console.log('reportParams', reportParams);
         let self = this;
+        let indicatorDef= new IndicatorDefinitionService();
+        
+        console.log()
         let report = new BaseMysqlReport('clinicHivComparativeOverviewAggregate', reportParams);
         return new Promise(function (resolve, reject) {
             Promise.join(report.generateReport(),
@@ -21,9 +29,12 @@ export class hivComparativeOverviewService {
                     returnedResult.schemas = result.schemas;
                     returnedResult.sqlQuery = result.sqlQuery;
                     returnedResult.result = result.results.results;
+                    returnedResult.indicatorDefinitions = hivDefinitions.indicatorDefinitions;
+                    console.log();
                     resolve(returnedResult);
                     //TODO Do some post processing
                 }).catch((errors) => {
+                    console.log('errors', errors);
                 reject(errors);
             });
         });
