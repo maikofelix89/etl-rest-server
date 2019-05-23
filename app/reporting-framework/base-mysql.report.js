@@ -138,6 +138,8 @@ import * as prep_aggregate_report from './json-reports/prep-aggregate-report.jso
 import * as ltfu_surge_baseline_report from './json-reports/ltfus-surge-baseline-base.json';
 import * as ltfu_surge_baseline_aggregate_report from './json-reports/ltfus-surge-baseline-aggregate.json';
 import * as patient_list_prep_template from './json-reports/patient-list-prep-template.json';
+import * as differentiated_care_program_aggregate from './json-reports/differentiated-care-program-aggregate.json';
+import * as differentiated_care_program_base from './json-reports/differentiated-care-program-base.json';
 
 export class BaseMysqlReport {
     constructor(reportName, params) {
@@ -605,6 +607,12 @@ export class BaseMysqlReport {
                     main: this.cloneJsonSchema(retention_report_patient_list_template)
                 });
                    break;
+                case 'differentiatedCareProgramAggregate':
+                    resolve({
+                        main: this.cloneJsonSchema(differentiated_care_program_aggregate),
+                        differentiatedCareProgramBase: this.cloneJsonSchema(differentiated_care_program_base)
+                    });
+                    break;
                 default:
                     reject('Unknown report ', reportName);
                     break;
