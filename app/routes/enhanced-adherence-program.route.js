@@ -22,6 +22,10 @@ const routes = [{
             if (requestParams.indicators) {
                 indicators = requestParams.indicators.split(',');
             }
+
+            if(!requestParams.lower_vl){
+                requestParams.lower_vl = 401;
+            }
             requestParams.locationUuids = locationUuids;
             requestParams.startDate = requestParams.startDate.split('T')[0];
             requestParams.endDate = requestParams.endDate.split('T')[0];
