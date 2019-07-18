@@ -324,7 +324,7 @@ module.exports = function () {
                                 .then((result) => {
                                     let locationIds = result;
                                     request.query.locations = locationIds;
-                                    let combineRequestParams = Object.assign(request.query, request.params)
+                                    let combineRequestParams = Object.assign(request.query, request.params);
                                     let service = new MonthlyScheduleService();
                                     service.getMonthlyScheduled(combineRequestParams).then((result) => {
                                         reply(result);
@@ -1006,6 +1006,36 @@ module.exports = function () {
                     }
                 }
             },
+          {
+            method: 'GET',
+            path: '/etl/patient/{uuid}/oncology/summary',
+            config: {
+              auth: 'simple',
+              plugins: {
+                'hapiAuthorization': {
+                  role: privileges.canViewPatient
+                }
+              },
+              handler: function (request, reply) {
+                dao.getPatientOncologySummary(request, reply);
+              },
+              description: 'Get patient Oncology summary',
+              notes: "Returns a list of patient's Oncology summary with the given patient uuid. " +
+                "A patient's Oncology summary includes details such as last appointment date, " +
+                "most recent diagnosis etc. as at that encounter's date. ",
+              tags: ['api'],
+              validate: {
+                options: {
+                  allowUnknown: true
+                },
+                params: {
+                  uuid: Joi.string()
+                    .required()
+                    .description("The patient's uuid(universally unique identifier)."),
+                }
+              }
+            }
+          },
             {
                 method: 'GET',
                 path: '/etl/location/{uuid}/clinic-encounter-data',
@@ -2657,7 +2687,7 @@ module.exports = function () {
                                 service.getAggregateReport(reportParams).then((result) => {
                                     reply(result);
                                 }).catch((error) => {
-                                    console.error('Error loading HIV Summary:', error)
+                                    console.error('Error loading HIV Summary:', error);
                                     reply(error);
                                 });
                             });
