@@ -162,6 +162,9 @@ import * as hei_unknown_program_outcome_aggregate from './json-reports/hei-unkno
 import * as hei_unknown_program_outcome_base from './json-reports/hei-unknown-program-outcome-base.json';
 import * as hei_report_patient_list_template from './json-reports/hei-report-patient-list-template.json';
 
+import * as surge_daily_report_base from './json-reports/surge-daily-report-base';
+import * as surge_daily_report_aggregate from './json-reports/surge-daily-report-aggregate';
+
 export class BaseMysqlReport {
     constructor(reportName, params) {
         this.reportName = reportName;
@@ -693,6 +696,12 @@ export class BaseMysqlReport {
                             main: this.cloneJsonSchema(hei_report_patient_list_template)
                         });
                         break;
+                case 'surgeDailyReport':
+                    resolve({
+                        main: this.cloneJsonSchema(surge_daily_report_aggregate),
+                        surgeDailyReport: this.cloneJsonSchema(surge_daily_report_base)
+                    });
+                    break;
                 default:
                     reject('Unknown report ', reportName);
                     break;
