@@ -20,8 +20,6 @@ var config = require('../../conf/config');
 var moment = require('moment');
 var analytics = require('../../dao/analytics/etl-analytics-dao');
 var patientReminderService = require('../../service/patient-reminder.service.js');
-
-
 module.exports = function () {
     function getPatientHivSummary(request, callback) {
         var uuid = request.params.uuid;
@@ -279,6 +277,12 @@ module.exports = function () {
                 row.cur_arv_meds = helpers.getARVNames(row.cur_arv_meds);
                 row.lab_errors = helpers.resolvedLabOrderErrors(row.vl_error, row.cd4_error, row.hiv_dna_pcr_error);
                 row.hiv_dna_pcr = helpers.getConceptName(row.hiv_dna_pcr);
+                row.pus_c_urine = helpers.getConceptName(row.pus_c_urine);
+                row.protein_urine = helpers.getConceptName(row.protein_urine);
+                row.leuc = helpers.getConceptName(row.leuc);
+                row.ketone = helpers.getConceptName(row.ketone);
+                row.sugar_urine = helpers.getConceptName(row.sugar_urine);
+                row.nitrites = helpers.getConceptName(row.nitrites);
                 row.chest_xray = helpers.getConceptName(row.chest_xray);
                 row.ecg = helpers.getConceptName(row.ecg);
 
