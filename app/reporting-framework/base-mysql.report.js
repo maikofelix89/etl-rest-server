@@ -116,6 +116,21 @@ import * as lung_cancer_patient_list_template from './json-reports/lung-cancer-p
 
 import * as differentiated_care_program_aggregate from './json-reports/differentiated-care-program-aggregate.json';
 import * as differentiated_care_program_base from './json-reports/differentiated-care-program-base.json';
+// appointment adherence
+import * as appointment_adherence from './json-reports/retention-report/appointment-adherence.json';
+import * as retention_appointment_adherence_aggregate from './json-reports/retention-appointment-adherence-aggregate';
+import * as retention_appointment_adherence_base from './json-reports/retention-appointment-adherence-base.json';
+import * as retention_report_patient_list_template from './json-reports/retention-report-patient-list-template.json';
+// defaulter tracing
+import * as retention_defaulter_tracing_base from './json-reports/retention-defaulter-tracing-base.json';
+import * as retention_defaulter_tracing_aggregate from './json-reports/retention-defaulter-tracing-aggregate.json';
+// retention visits
+import * as retention_visits_base from './json-reports/retention-report-visits-base.json';
+import * as retention_visits_aggregate from './json-reports/retention-report-visits-aggregate.json';
+import * as retention_intervention_cohort from './json-reports/retention-intervention-cohort.json';
+import * as retention_ltfu_base from './json-reports/retention-ltfu-base.json';
+import * as retention_ltfu_aggregate from './json-reports/retention-ltfu-aggregate.json';
+
 
 import * as surge_report_base from './json-reports/surge-report-base.json';
 import * as surge_report_aggregate from './json-reports/surge-report-aggregate.json';
@@ -146,17 +161,18 @@ export class BaseMysqlReport {
             // fetch reports
             that.fetchReportSchema(that.reportName)
                 .then((reportSchemas) => {
+                    console.log('reportschema', reportSchemas);
                     that.reportSchemas = reportSchemas;
                     // generate query
                     that.generateReportQuery(that.reportSchemas, that.params)
                         .then((sqlQuery) => {
                             // allow user to use 'null' as parameter values
                             sqlQuery = sqlQuery.replace(/\'null\'/g, "null");
-                            // console.log('Query: ', sqlQuery);
+                            console.log('sql query', sqlQuery);
 
                             that.reportQuery = sqlQuery;
                             // run query
-                            // console.log('Query', sqlQuery);
+                            console.log('Query', sqlQuery);
                             that.executeReportQuery(that.reportQuery)
                                 .then((result) => {
                                     return that.transFormResults(that.reportSchemas, result);
@@ -186,6 +202,7 @@ export class BaseMysqlReport {
     }
 
     fetchReportSchema(reportName, version) {
+        console.log('fetchReportSchema', reportName);
         return new Promise((resolve, reject) => {
             switch (reportName) {
                 case 'MOH-731-greencard':
@@ -575,6 +592,41 @@ export class BaseMysqlReport {
                         main: this.cloneJsonSchema(surge)
                     });
                     break;
+                case 'retention-report':
+                    resolve({
+                        main: this.cloneJsonSchema(appointment_adherence)
+                    });
+                break;
+                case 'retentionAppointmentAdherenceAggregate':
+                    resolve({
+                        main: this.cloneJsonSchema(retention_appointment_adherence_aggregate),
+                        retentionAppointmentAdherenceBase: this.cloneJsonSchema(retention_appointment_adherence_base)
+                    });
+                    break;
+                case 'retentionDefaulterTracingAggregate':
+                resolve({
+                    main: this.cloneJsonSchema(retention_defaulter_tracing_aggregate),
+                    retentionDefaulterTracingBase:this.cloneJsonSchema(retention_defaulter_tracing_base)
+                });
+                   break;
+                case 'retentionVisitsAggregate':
+                   resolve({
+                       main: this.cloneJsonSchema(retention_visits_aggregate),
+                       retentionVisitsBase:this.cloneJsonSchema(retention_visits_base),
+                       retentionInterventionCohort: this.cloneJsonSchema(retention_intervention_cohort),
+                   });
+                      break;
+                case 'retentionLtfuAggregate':
+                      resolve({
+                          main: this.cloneJsonSchema(retention_ltfu_aggregate),
+                          retentionLtfuBase:this.cloneJsonSchema(retention_ltfu_base)
+                      });
+                         break;
+                case 'retention-report-patient-list-template':
+                resolve({
+                    main: this.cloneJsonSchema(retention_report_patient_list_template)
+                });
+                   break;
                 default:
                     reject('Unknown report ', reportName);
                     break;
