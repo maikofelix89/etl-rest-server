@@ -66,6 +66,10 @@ import { SurgeService } from './service/surge-reports/surge-report.service';
 
 var patientReminderService = require('./service/patient-reminder.service.js');
 var  kibanaService = require('./service/kibana.service');
+import { HeiSummaryService } from './service/moh-408-service';
+import {
+    HeiProgrammeOutcomeService
+} from './service/hei-programme-outcome-service';
 
 import { 
     RetentionAppointmentTracingService 
@@ -4765,7 +4769,95 @@ module.exports = function () {
                     notes: 'Returns Retention Report Patient List',
                     tags: ['api'],
                 }
-            }
+            },
+            {
+                method: 'GET',
+                path: '/etl/hei-monthly-summary',
+                config: {
+                    plugins: {
+                        'hapiAuthorization': {
+                        }
+                    },
+                    handler: function (request, reply) {
+
+                        preRequest.resolveLocationIdsToLocationUuids(request,
+                            function () {
+                                let requestParams = Object.assign({}, request.query, request.params);
+                                let reportParams = etlHelpers.getReportParams('hei-monthly-summary',
+                                    ['startDate', 'endDate', 'locationUuids'],
+                                    requestParams);
+                                console.log('reportParams', reportParams);
+
+                                let heiSummaryService = new HeiSummaryService('MOH-408', reportParams.requestParams);
+                                let heiProgramOutcomeService = new HeiProgrammeOutcomeService();
+                                heiSummaryService.generateReport().then((result) => {
+                                    // fetch the second report
+                                    heiProgramOutcomeService.getAggregateReport(reportParams)
+                                    .then((outcomeResult)=> {
+                                        console.log('outcomeresult', outcomeResult);
+                                        result['outcome_result']= outcomeResult;
+                                        reply(result);
+                                        
+                                    }).catch((error) => {
+                                        console.error('Error: ', error);
+                                        reply(error);
+                                });
+                                }).catch((error) => {
+                                        console.error('Error: ', error);
+                                        reply(error);
+                                });
+                            });
+                       
+                        },
+                        description: "Get the monthly hei monthly summary report",
+                        notes: "Returns the the monthly hei summary report",
+                        tags: ['api'],
+                        validate: {
+                            options: {
+                                allowUnknown: true
+                            },
+                            params: {}
+                        }
+                    }
+
+                },
+                {
+                method: 'GET',
+                path: '/etl/hei-monthly-summary/patient-list',
+                config: {
+                    auth: 'simple',
+                    plugins: {
+                        
+                    },
+                    handler: function (request, reply) {
+                        request.query.reportName = 'hei-summary-patient-list';
+                        preRequest.resolveLocationIdsToLocationUuids(request,
+                            function () {
+                                let requestParams = Object.assign({}, request.query, request.params);
+
+                                let requestCopy = _.cloneDeep(requestParams);
+                                // console.log('requestParams', requestParams);
+                                let reportParams = etlHelpers.getReportParams(request.query.reportName, ['startDate', 'endDate', 'locationUuids', 'locations', 'isAggregated'], requestParams);
+                                requestCopy.locations = reportParams.requestParams.locations;
+                                // console.log('report params', reportParams)
+                                requestCopy.limitParam = requestParams.limit;
+                                requestCopy.offSetParam = requestParams.startIndex;
+                                const moh408Service = new HeiSummaryService('MOH-408', requestCopy);
+
+                                moh408Service.generatePatientListReport(requestParams.indicators.split(',')).then((results) => {
+                                    reply(results);
+                                })
+                                    .catch((err) => {
+                                        reply(Boom.internal('An error occured', err));
+                                    });
+                            });
+
+                    },
+                    description: 'HEI summary Patient list',
+                    notes: 'Returns HEI summary patient list',
+                    tags: ['api'],
+                }
+                }
 
         ];
 
