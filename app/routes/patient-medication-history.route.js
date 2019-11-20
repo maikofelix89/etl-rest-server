@@ -33,8 +33,8 @@ const routes = [{
                                     } else if (a.concept_id === 7463) {
                                         oncMed.cur_onc_meds_route = helpers.getConceptName(a.value_coded);
                                     }
-                                    if (planAndDate) {
-                                        oncMed.meds_start_date = planAndDate[0].obs_datetime;
+                                    if (planAndDate.length > 0) {
+                                        oncMed.meds_start_date = helpers.filterDate(planAndDate[0].obs_datetime);
                                         oncMed.chemotherapy_plan = helpers.getConceptName(planAndDate[0].value_coded);
                                     }
                                 });
