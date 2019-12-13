@@ -8,8 +8,40 @@
         {
             "table": "etl.flat_appointment",
             "alias": "t2"
+        },
+        {
+            "dataSet": "dailyAppointmentlatestRtcCohortBase",
+            "alias": "latest_encounter",
+            "join": {
+                "type": "LEFT",
+                "joinCondition": "latest_encounter.person_id = t2.person_id"
+            }
+        },
+        {
+            "table": "etl.flat_appointment",
+            "alias": "t3",
+            "join": {
+                "type": "LEFT",
+                "joinCondition": "t3.person_id = t2.person_id AND t3.encounter_id = latest_encounter.max_encounter_id"
+            }
+        },
+        {
+            "table": "amrs.program",
+            "alias": "pr",
+            "join": {
+                "type": "LEFT",
+                "joinCondition": "pr.program_id  = t3.program_id"
+            }
+        },
+        {
+            "table": "etl.flat_hiv_summary_v15b",
+            "alias": "fhs",
+            "join": {
+                "type": "LEFT",
+                "joinCondition": "t2.encounter_id  = fhs.encounter_id"
+            }
         }
-    ],
+    ], 
     "columns": [
         {
             "type": "simple_column",
@@ -21,6 +53,11 @@
             "alias": "encounter_type",
             "column": "t2.encounter_type"
         },
+        {
+            "type": "simple_column",
+            "alias": "program",
+            "column": "pr.name"
+        }, 
         {
             "type": "simple_column",
             "alias": "rtc_date",
@@ -86,6 +123,11 @@
             {
                 "filterType": "tableColumns",
                 "conditionExpression":  "t2.is_clinical = 1",
+                "parameterName": ""
+            },
+            {
+                "filterType": "tableColumns",
+                "conditionExpression":  "fhs.transfer_out_location_id IS NULL",
                 "parameterName": ""
             }
         ]
