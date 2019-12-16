@@ -117,7 +117,7 @@
             },
             {
                 "filterType": "tableColumns",
-                "conditionExpression":  "((t2.next_encounter_type<>116  OR  t2.next_encounter_type is null )   OR t2.rtc_date >= next_encounter_datetime)",
+                "conditionExpression":  "((t2.next_encounter_type<>116  OR  t2.next_encounter_type is null )   OR t2.rtc_date >= t2.next_encounter_datetime)",
                 "parameterName": ""
             },
             {
