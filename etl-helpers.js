@@ -349,7 +349,73 @@ module.exports = function () {
                 9847: "NON-CANCER",
                 9841: "BREAST CANCER TYPE",
                 6582: "CANCER STAGE",
-                6504: "DIAGNOSIS METHOD"
+                6504: "DIAGNOSIS METHOD",
+                507: "KAPOSI'S SARCOMA",
+                6486: "SOFT TISSUE SARCOMA",
+                6487: "OSTEOGENIC SARCOMA",
+                6488: "EWING'S SARCOMA",
+                6489: "RHABDOMYOSARCOMA",
+                6490: "OTHER SARCOMA",
+                1065: "YES",
+                9849: "NEW CANCER PATIENT",
+                9850: "CANCER RECURRENCE",
+                6484: "SOLID CANCER",
+                7175: "HEMATOLOGIC CANCER",
+                6529: "THYROID CANCER",
+                6522: "GASTRIC CANCER",
+                9636: "ENDOMETRIAL CANCER",
+                9637: "BONE OR SOFT TISSUE CANCER",
+                9638: "ADRENOCORTICAL CARCINOMA",
+                9639: "BRAIN CANCER",
+                9640: "ACUTE LEUKEMIA",
+                6544: "BREAST CANCER",
+                6545: "INFLAMMATORY BREAST CANCER",
+                9846: "OTHER SOLID CANCER TYPE",
+                6514: "GENITOURINARY CANCER",
+                6520: "GASTROINTESTINAL CANCER",
+                6528: "HEAD AND NECK CANCER",
+                6551: "LYMPHOMA CANCER TYPE",
+                6540: "SKIN CANCER TYPE",
+                216: "LEUKEMIA",
+                10129: "NON SMALL CELL LUNG CANCER",
+                10130: "SMALL CELL LUNG CANCER",
+                8424: "RETINOBLASTOMA",
+                8425: "NEUROBLASTOMA",
+                9845: "LUNG CANCER",
+                6515: "BLADDER CANCER",
+                6516: "RENAL CELL CANCER",
+                6517: "WILM'S TUMOR",
+                6518: "PROSTATE CANCER",
+                6519: "TESTES CANCER",
+                6521: "ESOPHAGEAL CANCER",
+                6523: "PANCREATIC CANCER",
+                6524: "CHOLANGIOCARCINOMA",
+                6525: "COLON CANCER",
+                6526: "RECTAL CANCER",
+                6527: "ANAL CANCER",
+                6568: "HEPATOCELLULAR CANCER",
+                6530: "NASOPHARYNGEAL SQUAMOUS CELL CANCER",
+                6531: "OROPHARYNGEAL SQUAMOUS CELL CANCER",
+                6532: "HYPOPHARYNGEAL SQUAMOUS CELL CANCER",
+                6533: "LARYNGEAL SQUAMOUS CELL CANCER",
+                6534: "HEAD AND NECK SQUAMOUS CELL CANCER, SITE NOT SPECIFIED",
+                6535: "POSTERIOR NASAL SPACE TUMOR",
+                6538: "UTERINE CANCER",
+                6539: "OVARIAN CANCER",
+                6553: "NON-HODGKIN'S LYMPHOMA",
+                6552: "HODGKIN'S LYMPHOMA",
+                8423: "BURKITT'S LYMPHOMA",
+                6541: "SKIN SQUAMOUS CELL CANCER",
+                6542: "BASAL CELL CANCER",
+                6543: "MELANOMA",
+                7422: "ADENOCARCINOMA",
+                7421: "SQUAMOUS CELL CARCINOMA, NOT OTHERWISE SPECIFIED",
+                10131: "LARGE CELL CARCINOMA",
+                10209: "MIXED SQUAMOUS",
+                6547: "CHRONIC MYELOGENOUS LEUKEMIA",
+                6548: "CHRONIC LYMPHOCYTIC LEUKEMIA",
+                6549: "ACUTE MYELOGENOUS LEUKEMIA",
+                6550: "ACUTE LYMPHOCYTIC LEUKEMIA"
             };
             return concepts[code];
         },
@@ -392,7 +458,8 @@ module.exports = function () {
                 6965: {mapped_to_ids: "625;628", name: "LAMIVUDINE AND STAVUDINE"},
                 9435: {mapped_to_ids: "9435", name: "EVIPLERA"},
                 9759: {mapped_to_ids: "9759", name: "DOLUTEGRAVIR"},
-                9026: {mapped_to_ids: "9026", name: "LOPINAVIR"}
+                9026: {mapped_to_ids: "9026", name: "LOPINAVIR"},
+                10090: {mapped_to_ids: "10090", name: "RILPIVIRINE"}
             };
             var arvCodes = str.split(" ## ");
             var arvNames = [];
@@ -718,6 +785,15 @@ module.exports = function () {
               return moment(date).format('DD-MM-YYYY');
             }
             return date;
+        },
+        titleCase: function titleCase(name) {
+          if (name) {
+            name = name.toLowerCase().split(" ");
+            for (var i = 0; i < name.length; i++) {
+              name[i] = name[i].charAt(0).toUpperCase() + name[i].slice(1);
+            }
+            return name.join(" ");
+          }
         }
     };
 
