@@ -142,6 +142,8 @@ import * as patient_list_prep_template from './json-reports/patient-list-prep-te
 import * as differentiated_care_program_aggregate from './json-reports/differentiated-care-program-aggregate.json';
 import * as differentiated_care_program_base from './json-reports/differentiated-care-program-base.json';
 
+import * as hiv_latest_clinical_encounter_date_base from './json-reports/hiv-latest-clinical-encounter-date-base.json';
+
 export class BaseMysqlReport {
     constructor(reportName, params) {
         this.reportName = reportName;
@@ -535,7 +537,8 @@ export class BaseMysqlReport {
                         main: this.cloneJsonSchema(enhanced_adherence_hiv_program_aggregate),
                         enhancedAdherenceHIVProgramBase: this.cloneJsonSchema(enhanced_adherence_hiv_program_base),
                         patientProgramCohort: this.cloneJsonSchema(patient_program_cohort),
-                        enhancedAdherenceHIVProgramCohort: this.cloneJsonSchema(enhanced_adherence_hiv_program_cohort)
+                        enhancedAdherenceHIVProgramCohort: this.cloneJsonSchema(enhanced_adherence_hiv_program_cohort),
+                        hivLatestClinicalEncounterDateBase: this.cloneJsonSchema(hiv_latest_clinical_encounter_date_base)
                     });
                     break;
                 case 'currentlyEnrolledPatientsAggregate':
