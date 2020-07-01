@@ -113,7 +113,7 @@
             "alias": "has_not_returned",
             "expressionType": "simple_expression",
             "expressionOptions": {
-                "expression": "if(date(t2.rtc_date) < DATE(NOW()) AND ((t2.department_id = t7.department_id) OR (t2.department_id is NULL AND t7.department_id is NULL)), 1 , NULL)"
+                "expression": "if(date(t2.rtc_date) < DATE(NOW()), 1 , NULL)"
             }
         },
         {
