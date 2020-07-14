@@ -3250,17 +3250,23 @@ module.exports = function () {
                             var rawPayload = JSON.parse(JSON.stringify(request.payload));
                             var labName = request.params.lab;
                             pocEidPayloadHelper.generatePocToEidPayLoad(rawPayload).then((eidPayLoad) => {
+                                console.log('eidPayload', eidPayLoad);
                                 let configObj = config.hivLabSystem[labName];
                                 if (typeof configObj !== 'undefined') {
 
                                     let client = new LabClient(configObj);
-                                    return client.postLabPayload(eidPayLoad);
+                                    client.postLabPayload(eidPayLoad).then((result) => {
+                                        console.log('Result found', result );
+                                        reply(result);
+                                    }).catch((error)=> {
+                                        let errorObject = error.error;
+                                        console.error('Error', errorObject);
+                                        reply(errorObject.error).code(error.statusCode);
+                                    });
 
                                 } else {
                                     console.error('Undefined Lab Configuration');
                                 }
-                            }).then((result) => {
-                                reply(result);
                             }).catch((error) => {
                                 let errorObject = JSON.parse(error.error);
                                 console.error('Error', errorObject);

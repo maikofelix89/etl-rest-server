@@ -237,7 +237,9 @@ function newViralLoadPresent(data) {
 }
 
 function pendingViralLoadLabResult(eidResults) {
+    console.log('eidResults', eidResults);
     let incompleteResult = eidResults.find((result)=>{
+        console.log('Results', result);
         if(result.sample_status){
             return result.sample_status === 'Incomplete';
         }

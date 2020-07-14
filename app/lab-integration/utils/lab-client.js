@@ -61,6 +61,7 @@ export class LabClient {
     }
 
     postLabPayload(payload) {
+        console.log('postLabPayload', payload);
         switch (payload.test) {
             case 1:
                 return this.postDNAPCR(payload);
@@ -86,16 +87,21 @@ export class LabClient {
     }
 
     postViralLoad(payload) {
-        const options = {
-            uri: `${this.config.serverUrl}/api/vl`,
-            headers: {
-                'apikey': this.config.apiKey
-            },
-            method: 'POST',
-            formData: payload
-        };
-        return rp(options);
-    }
+        console.log('postViralLoad',payload);
+         const options = {
+             uri: `${this.config.serverUrl}/api/vl`,
+             headers: {
+                 'apikey': this.config.apiKey,
+                 'Content-Type': 'application/json'
+             },
+             method: 'POST',
+             json: true,
+             body: payload,
+             resolveWithFullResponse: true
+         };
+         console.log('post options', options);
+         return rp(options);
+     }
 
     postCD4(payload) {
         const options = {
@@ -120,12 +126,13 @@ export class LabClient {
         var options = {
             uri: `${this.config.serverUrl}/api/function?page=${fetchOffset}`,
             headers: {
-                'apikey': this.config.apiKey
+                'apikey': this.config.apiKey,
+                'Content-Type': 'application/json'
             },
             json: true,
             insecure: true,
             method: 'POST',
-            formData: filterOptions
+            body: filterOptions
         };
         return rp(options);
     }

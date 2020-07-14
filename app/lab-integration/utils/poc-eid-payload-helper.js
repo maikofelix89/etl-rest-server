@@ -21,7 +21,7 @@
                             "patient_identifier": payload.patientIdentifier,
                             "dob": payload.birthDate,
                             "datecollected": payload.dateDrawn,
-                            "sex": getGenderCode(payload.sex),
+                            "sex": 1,
                             "prophylaxis": getArtRegimen(payload) || 16,
                             "regimenline": 1,
                             "order_no": payload.orderNumber,
