@@ -115,6 +115,10 @@ import * as lung_cancer_patient_list_template from './json-reports/lung-cancer-p
 
 import * as referral_patient_list_peer_base from './json-reports/referral-peer-base';
 import * as referral_peer_aggregate from './json-reports/referral-peer-aggregate';
+import * as differentiated_care_program_aggregate from './json-reports/differentiated-care-program-aggregate.json';
+import * as differentiated_care_program_base from './json-reports/differentiated-care-program-base.json';
+import * as differentiated_care_weight_dataset from './json-reports/differentiated-care-weight-dataset.json'
+import * as differentiated_care_height_dataet from './json-reports/differentiated-care-height-dataset.json'
 // appointment adherence
 import * as appointment_adherence from './json-reports/retention-report/appointment-adherence.json';
 import * as retention_appointment_adherence_aggregate from './json-reports/retention-appointment-adherence-aggregate';
@@ -140,8 +144,6 @@ import * as prep_dataset_report from './json-reports/prep-dataset-report.json';
 import * as ltfu_surge_baseline_report from './json-reports/ltfus-surge-baseline-base.json';
 import * as ltfu_surge_baseline_aggregate_report from './json-reports/ltfus-surge-baseline-aggregate.json';
 import * as patient_list_prep_template from './json-reports/patient-list-prep-template.json';
-import * as differentiated_care_program_aggregate from './json-reports/differentiated-care-program-aggregate.json';
-import * as differentiated_care_program_base from './json-reports/differentiated-care-program-base.json';
 
 import * as hiv_latest_clinical_encounter_date_base from './json-reports/hiv-latest-clinical-encounter-date-base.json';
 import * as moh_408 from './json-reports/moh-408.json';
@@ -574,6 +576,15 @@ export class BaseMysqlReport {
                             referralDatasetbase: this.cloneJsonSchema(referral_patient_list_peer_base)
                         });
                 break;
+                    break;
+                case 'differentiatedCareProgramAggregate':
+                    resolve({
+                        main: this.cloneJsonSchema(differentiated_care_program_aggregate),
+                        differentiatedCareProgramBase: this.cloneJsonSchema(differentiated_care_program_base),
+                        differentiatedCareWeightDataset: this.cloneJsonSchema(differentiated_care_weight_dataset),
+                        differentiatedCareHeightDataset: this.cloneJsonSchema(differentiated_care_height_dataet)
+                    });
+                    break;
                 case 'surgeReport':
                     resolve({
                         main: this.cloneJsonSchema(surge_report_aggregate),
@@ -633,12 +644,6 @@ export class BaseMysqlReport {
                     main: this.cloneJsonSchema(retention_report_patient_list_template)
                 });
                    break;
-                case 'differentiatedCareProgramAggregate':
-                    resolve({
-                        main: this.cloneJsonSchema(differentiated_care_program_aggregate),
-                        differentiatedCareProgramBase: this.cloneJsonSchema(differentiated_care_program_base)
-                    });
-                    break;
                 case 'MOH-408':
                     resolve({
                         main: this.cloneJsonSchema(moh_408)
