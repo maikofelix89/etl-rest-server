@@ -35,6 +35,8 @@ import * as ever_on_art_base from './json-reports/ever-on-art-base.json';
 import * as referral_patient_list_template from './json-reports/referral-patient-list-template.json';
 import * as referral_dataset_base from './json-reports/referral-dataset-base.json';
 import * as referral_aggregate from './json-reports/referral-aggregate.json';
+import * as referral_peer_aggregate from './json-reports/referral-peer-aggregate.json';
+import * as referral_patient_list_peer_base from './json-reports/referral-peer-base.json';
 import * as cdm_dataset_base from './json-reports/cdm/cdm-dataset-base.json';
 
 import * as starting_art_aggregation_age15 from './json-reports/starting-art-aggregation-age15.json';
@@ -113,8 +115,6 @@ import * as lung_cancer_monthly_screening_summary_aggregate from './json-reports
 import * as lung_cancer_monthly_screening_summary_base from './json-reports/lung-cancer-monthly-screening-summary-base.json';
 import * as lung_cancer_patient_list_template from './json-reports/lung-cancer-patient-list-template.json';
 
-import * as referral_patient_list_peer_base from './json-reports/referral-peer-base';
-import * as referral_peer_aggregate from './json-reports/referral-peer-aggregate';
 import * as differentiated_care_program_aggregate from './json-reports/differentiated-care-program-aggregate.json';
 import * as differentiated_care_program_base from './json-reports/differentiated-care-program-base.json';
 import * as differentiated_care_weight_dataset from './json-reports/differentiated-care-weight-dataset.json'
@@ -411,6 +411,12 @@ export class BaseMysqlReport {
                     resolve({
                         main: this.cloneJsonSchema(referral_aggregate),
                         referralDatasetbase: this.cloneJsonSchema(referral_dataset_base)
+                    });
+                    break;
+                case 'referral-patient-peer-navigator-list':
+                    resolve({
+                        main: this.cloneJsonSchema(referral_peer_aggregate),
+                        referralDatasetbase: this.cloneJsonSchema(referral_patient_list_peer_base)
                     });
                     break;
                 case 'StartingARTAggregationAge15':
