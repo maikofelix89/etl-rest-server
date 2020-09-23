@@ -154,7 +154,7 @@ var Sync = {
             Sync.nextSyncDateTime = moment().add(10, 'minute');
           }
 
-          console.log('error while syncing ' + patientUuId + '. Logging error.');
+          console.log('error while syncing ' + patientUuId + '. Logging error.' + err);
           Sync.logError(patientUuId, err)
             .then(function () {
               resolve('str');
