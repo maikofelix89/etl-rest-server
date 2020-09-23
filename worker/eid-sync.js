@@ -130,7 +130,7 @@ var Sync = {
 
     var protocol = config.etl.tls ? 'https' : 'http';
 
-    var url = protocol + '://0.0.0.0:8007/etl/patient-lab-orders?patientUuId=' + patientUuId + '&mode=batch';
+    var url = protocol + '://10.50.80.56:8007/etl/patient-lab-orders?patientUuId=' + patientUuId + '&mode=batch';
 
     var usernamePass = config.eidSyncCredentials.username + ":" + config.eidSyncCredentials.password;
     var auth = "Basic " + new Buffer(usernamePass).toString('base64');
