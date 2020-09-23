@@ -8,7 +8,7 @@ var
 
 var Sync = {
 
-  timeout: config.eidSyncSettings.timeout,
+  timeout: 30000,
 
   nextSyncDateTime: moment().subtract(1, 'minute'),
 
@@ -76,9 +76,10 @@ var Sync = {
               return Sync.deleteProcessed(data);
             })
             .then(function (deleted) {
+              console.log('wait 2 seconds ..');
               setTimeout(function(){
                 Sync.process();
-              },config.eidSyncSettings.syncInterval);
+              },20);
             })
             .catch(function (err) {
 
@@ -92,6 +93,7 @@ var Sync = {
   },
 
   loadDbRecords: function () {
+    console.log('Load Db record..');
 
     var limit = Sync.records_limit;
 
@@ -140,6 +142,8 @@ var Sync = {
       }
     }
 
+    console.log('Options ..', options);
+
     return new Promise(function (resolve, reject) {
 
       curl.request(options, function (err, parts) {
@@ -159,6 +163,7 @@ var Sync = {
               resolve('str');
             });
         } else {
+          console.log('Curl parts ..', parts);
           console.log('syncing single record done. ' + patientUuId);
           resolve('str');
         }
