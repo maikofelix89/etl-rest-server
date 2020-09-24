@@ -146,29 +146,36 @@ var Sync = {
 
     return new Promise(function (resolve, reject) {
 
-      curl.request(options, function (err, parts) {
+      Sync.deleteLogEntry(patientUuId)
+      .then(function (result) {
 
-        if (err) {
-          if (err === 'Failed to connect to host.') {
-            console.error('ETL Backend Service might be down.');
-            Sync.nextSyncDateTime = moment().add(10, 'minute');
-          }
+            curl.request(options, function (err, parts) {
 
-          console.log('error while syncing ' + patientUuId + '. Logging error.' + err);
-          Sync.logError(patientUuId, err)
-            .then(function () {
-              resolve('str');
-            })
-            .catch(function (err) {
-              resolve('str');
+              if (err) {
+                if (err === 'Failed to connect to host.') {
+                  console.error('ETL Backend Service might be down.');
+                  Sync.nextSyncDateTime = moment().add(10, 'minute');
+                }
+
+                console.log('error while syncing ' + patientUuId + '. Logging error.' + err);
+                Sync.logError(patientUuId, err)
+                  .then(function () {
+                    resolve('str');
+                  })
+                  .catch(function (err) {
+                    resolve('str');
+                  });
+              } else {
+                console.log('Curl parts ..', parts);
+                console.log('syncing single record done. ' + patientUuId);
+                resolve('str');
+              }
+
             });
-        } else {
-          console.log('Curl parts ..', parts);
-          console.log('syncing single record done. ' + patientUuId);
-          resolve('str');
-        }
-
-      });
+          }).catch(function(error){
+              console.log('Error deleting log record...', error);
+              resolve('str');
+          });
     });
   },
 
@@ -219,6 +226,30 @@ var Sync = {
         resolve(e);
       }
     });
+  },
+  deleteLogEntry: function (uuid){
+
+    console.log('Delete sync log for', uuid);
+
+    var sql = 'delete from etl.eid_sync_log where person_uuid in (?)';
+
+    var qObject = {
+      query: sql,
+      sqlParams: []
+    }
+
+    return new Promise(function (resolve, reject) {
+      try {
+        db.queryReportServer(qObject, function (result) {
+          resolve(result);
+        });
+      } catch (e) {
+
+        //TODO - ignoring delete
+        resolve(e);
+      }
+    });
+      
   }
 }
 
