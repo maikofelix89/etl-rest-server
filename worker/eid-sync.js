@@ -231,7 +231,7 @@ var Sync = {
 
     console.log('Delete sync log for', uuid);
 
-    var sql = 'delete from etl.eid_sync_log where person_uuid in (?)';
+    var sql = 'delete from etl.eid_sync_log where person_uuid = ' + uuid;
 
     var qObject = {
       query: sql,
