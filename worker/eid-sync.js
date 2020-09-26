@@ -76,10 +76,10 @@ var Sync = {
               return Sync.deleteProcessed(data);
             })
             .then(function (deleted) {
-              console.log('wait 2 seconds ..');
+              console.log('wait 10 seconds ..');
               setTimeout(function(){
                 Sync.process();
-              },20);
+              },10000);
             })
             .catch(function (err) {
 
