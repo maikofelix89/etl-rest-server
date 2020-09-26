@@ -79,7 +79,7 @@ var Sync = {
               console.log('wait 10 seconds ..');
               setTimeout(function(){
                 Sync.process();
-              },10000);
+              },500);
             })
             .catch(function (err) {
 
