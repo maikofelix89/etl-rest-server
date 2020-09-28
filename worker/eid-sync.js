@@ -33,7 +33,7 @@ var Sync = {
 
       if (!Sync.processing)
         Sync.process();
-    }, Sync.timeout);
+    }, config.eidSyncSettings.syncInterval);
   },
 
   process: function () {
