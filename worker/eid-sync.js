@@ -18,6 +18,7 @@ var Sync = {
 
   start: function () {
     console.log('Starting EID sync');
+    console.log('EidsyncCredentials', JSON.stringify(config.eidSyncSettings));
     if (!config.eidSyncCredentials) {
       console.log('openmrs sync user credentials should be provided');
       process.exit(1);
@@ -76,10 +77,10 @@ var Sync = {
               return Sync.deleteProcessed(data);
             })
             .then(function (deleted) {
-              console.log('wait 10 seconds ..');
+              console.log(`wait ${config.eidSyncSettings.syncInterval} seconds ..`);
               setTimeout(function(){
                 Sync.process();
-              },50);
+              },config.eidSyncSettings.syncInterval);
             })
             .catch(function (err) {
 
