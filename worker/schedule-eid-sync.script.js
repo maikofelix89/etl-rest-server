@@ -39,13 +39,8 @@ var service = {
             // check for date arguments.
             var startDate = this.getProcessArg('--start-date');
             var endDate = this.getProcessArg('--end-date');
-            var lab = this.getProcessArg('--lab');
-            var weekly_sync = this.getProcessArg('--weekly');
-            if (lab) {
-                service.lab = lab;
-            } else {
-                process.exit(1);
-            }
+            var lab = 'ampath';
+            
             if (!startDate) {
                 console.log('no start date specified');
                 // No dates were passed in as arguments, therefore schedule for today
@@ -58,6 +53,7 @@ var service = {
                 service.startDate = startDate;
                 service.endDate = endDate;
             }
+            console.table(service);
             service.weekly_sync = weekly_sync || false;
             var usernamePass = config.eidSyncCredentials.username + ":" + config.eidSyncCredentials.password;
             var auth = "Basic " + new Buffer(usernamePass).toString('base64');
@@ -126,6 +122,7 @@ var service = {
         service.currentTrialCount++;
     },
     attemptToScheduleEidSync: function (startDate, endDate) {
+        console.log('attempttoschedule called', [startDate,endDate]);
         if (service.errorQueue.length === 0) {
             // service.initializeQueue(startDate, endDate);
 
@@ -308,7 +305,7 @@ var service = {
         });
     },
     scheduleQueue: function () {
-
+        console.log('scheduleQueue called ....');
         let configObj = config.hivLabSystem[service.lab];
         let options = {
             date_dispatched_start: service.startDate,
