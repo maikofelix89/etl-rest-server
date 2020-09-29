@@ -54,7 +54,7 @@ var service = {
                 service.endDate = endDate;
             }
             console.table(service);
-            service.weekly_sync = weekly_sync || false;
+            // service.weekly_sync = weekly_sync || false;
             var usernamePass = config.eidSyncCredentials.username + ":" + config.eidSyncCredentials.password;
             var auth = "Basic " + new Buffer(usernamePass).toString('base64');
             requestConfig.setAuthorization(auth);
