@@ -302,6 +302,7 @@ var service = {
         });
     },
     fetchAllPatientResults: function (configObj, options) {
+        console.log('FetchAllPatientResults ...', JSON.stringify(options));
         let promises = [service.fetchAllViralLoad(configObj, options), service.fetchAllDNAPCR(configObj, options),
         service.fetchAllCD4(configObj, options)];
         return Promise.all(promises).then((results) => {

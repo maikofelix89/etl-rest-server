@@ -19,6 +19,7 @@ export class LabClient {
         }
         filterOptions.test = 1;
         filterOptions.dispatched = 1;
+        console.log('DNA PCR Filter options..', JSON.stringify(filterOptions));
         return this.getFetchRequest(filterOptions, offset).catch(function (err) {
             //return error;
             return err;
@@ -31,6 +32,7 @@ export class LabClient {
         }
         filterOptions.test = 2;
         filterOptions.dispatched = 1;
+        console.log('VL Filter options..', JSON.stringify(filterOptions));
         return this.getFetchRequest(filterOptions, offset).catch(function (err) {
             //return error;
             return err;
@@ -56,6 +58,7 @@ export class LabClient {
         }
         filterOptions.test = 3;
         filterOptions.dispatched = 1;
+        console.log('DNA CD4 Filter options..', JSON.stringify(filterOptions));
         return this.getFetchRequest(filterOptions, offset).catch(function (err) {
             //return error;
             return err;
