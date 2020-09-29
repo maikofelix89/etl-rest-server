@@ -217,10 +217,10 @@ var service = {
 
 
     },
-    fetchAllViralLoad: async function (configObj, options) {
+    fetchAllViralLoad: function (configObj, options) {
         console.log('Fetching All viral load ....');
         let client = new LabClient(configObj);
-        return client.fetchViralLoad(options).then((result) => {
+        return client.fetchViralLoad(options).then(async (result) => {
             let promises = [];
             let i;
             console.log('VL results pages ..', result.last_page);
@@ -245,10 +245,10 @@ var service = {
             return identifiers;
         });
     },
-    fetchAllCD4: async function (configObj, options) {
+    fetchAllCD4: function (configObj, options) {
         console.log('Fetching All cd4 ....');
         let client = new LabClient(configObj);
-        return client.fetchCD4(options).then((result) => {
+        return client.fetchCD4(options).then(async (result) => {
             let promises = [];
             let i;
             for (i = 1; i <= result.last_page; i++) {
@@ -272,10 +272,10 @@ var service = {
             return identifiers;
         });
     },
-    fetchAllDNAPCR: async function (configObj, options) {
+    fetchAllDNAPCR: function (configObj, options) {
         console.log('Fetching All DNAPCR ....');
         let client = new LabClient(configObj);
-        return client.fetchDNAPCR(options).then((result) => {
+        return client.fetchDNAPCR(options).then(async (result) => {
             let promises = [];
             let i;
             for (i = 1; i <= result.last_page; i++) {
