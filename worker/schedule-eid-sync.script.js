@@ -224,6 +224,7 @@ var service = {
             let promises = [];
             let i;
             console.log('VL results pages ..', result.last_page);
+            console.log('VL results ..', JSON.parse(result));
             for (i = 1; i <= result.last_page; i++) {
                 console.log(`Page ${i}`);
                 let clientViralLoad = await client.fetchViralLoad(options, i);
