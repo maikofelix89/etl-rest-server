@@ -16,6 +16,8 @@ var Sync = {
 
   processing: false,
 
+  syncInterval: 30000,
+
   start: function () {
     console.log('Starting EID sync');
     console.log('EidsyncCredentials', JSON.stringify(config.eidSyncSettings));
@@ -33,12 +35,21 @@ var Sync = {
 
       if (!Sync.processing)
         Sync.process();
-    }, config.eidSyncSettings.syncInterval);
+    }, Sync.syncInterval);
   },
 
   process: function () {
 
     var today = new Date().getHours();
+
+    let currentHour = moment().format('HH');
+    console.log('Current Hour', currentHour);
+    if(currentHour >= 20 && currentHour <= 4){
+       Sync.syncInterval = 50;
+    }else{
+       Sync.syncInterval = config.eidSyncSettings.syncInterval;
+    }
+    console.log('SyncInterval', Sync.syncInterval);
 
     //sync records after working hours only
     // if (today >= 7 && today <= 17) {
