@@ -17,7 +17,7 @@ var Sync = {
 
   processing: false,
 
-  bulkSync: false,
+  bulkSync: true,
 
   start: function () {
     console.log('Starting EID sync');
@@ -58,9 +58,10 @@ var Sync = {
 
     const currentHour = moment().format('hh');
     console.log('Current hour ..', currentHour);
-    if(currentHour === '14'){
-         Sync.bulkSync = true;
+    if(currentHour === '14' && Sync.bulkSync === true ){
+  
          scheduleEidSync.start();
+         Sync.bulkSync = false;
          
     }
 
