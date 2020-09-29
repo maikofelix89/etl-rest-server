@@ -1,15 +1,11 @@
 var
     db = require('../etl-db'),
     fs = require('fs'),
-    util = require('util'),
-    stream = require('stream'),
-    es = require('event-stream'),
     config = require('../conf/config'),
     Promise = require('bluebird'),
     eidService = require('../service/eid.service.js'),
     _ = require('underscore'),
-    format = require('date-format'),
-    moment = require('moment');
+    format = require('date-format');
 var nodemailer = require('nodemailer'); // npm install nodemailer
 
 var log_file = 'lab-sync-scheduling.log';
