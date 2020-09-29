@@ -218,7 +218,7 @@ var service = {
 
     },
     fetchAllViralLoad: function (configObj, options) {
-        console.log('Fetching All viral load ....');
+        console.log('Fetching All viral load ....',JSON.stringify(options));
         let client = new LabClient(configObj);
         return client.fetchViralLoad(options).then(async (result) => {
             let promises = [];
@@ -228,7 +228,7 @@ var service = {
                 console.log(`Page ${i}`);
                 let clientViralLoad = await client.fetchViralLoad(options, i);
                 promises.push(clientViralLoad);
-                console.log(`Page ${i} done`);
+                console.log(`VL Page ${i} done`);
             }
             return Promise.all(promises);
         }).then((results) => {
@@ -246,11 +246,12 @@ var service = {
         });
     },
     fetchAllCD4: function (configObj, options) {
-        console.log('Fetching All cd4 ....');
+        console.log('Fetching All cd4 ....', JSON.stringify(options));
         let client = new LabClient(configObj);
         return client.fetchCD4(options).then(async (result) => {
             let promises = [];
             let i;
+            console.log('CD4 results pages ..', result.last_page);
             for (i = 1; i <= result.last_page; i++) {
                 console.log(`CD4 Page ${i}`);
                 const clientCd4 = await client.fetchCD4(options, i);
@@ -273,11 +274,12 @@ var service = {
         });
     },
     fetchAllDNAPCR: function (configObj, options) {
-        console.log('Fetching All DNAPCR ....');
+        console.log('Fetching All DNAPCR ....',JSON.stringify(options));
         let client = new LabClient(configObj);
         return client.fetchDNAPCR(options).then(async (result) => {
             let promises = [];
             let i;
+            console.log('DNAPCR results pages ..', result.last_page);
             for (i = 1; i <= result.last_page; i++) {
                 console.log(`PCR Page ${i}`);
                 const clientPcr = await client.fetchDNAPCR(options, i);
@@ -315,7 +317,8 @@ var service = {
         let configObj = config.hivLabSystem[service.lab];
         let options = {
             date_dispatched_start: service.startDate,
-            date_dispatched_end: service.endDate, dispached: 1,
+            date_dispatched_end: service.endDate, 
+            dispached: 1,
             facilty_code: '18776'
         };
         const queueTable = service.getQueuTable(service.lab);
