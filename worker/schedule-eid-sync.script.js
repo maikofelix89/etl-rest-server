@@ -619,4 +619,6 @@ var service = {
 
 };
 
+module.exports = service;
+
 // service.start();
