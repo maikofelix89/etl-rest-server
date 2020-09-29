@@ -30,10 +30,10 @@ var service = {
     schedulingInProgress: false,
     start: function () {
         console.info('scheduling process started');
-        setInterval(function () {
-            if (!service.schedulingInProgress)
-                service.scheduleEidSync();
-        }, service.retryInterval);
+        // setInterval(function () {
+        //     if (!service.schedulingInProgress)
+        //        service.scheduleEidSync();
+        // }, service.retryInterval);
         service.scheduleEidSync();
     },
     scheduleEidSync: function () {
@@ -622,4 +622,4 @@ var service = {
 
 };
 
-service.start();
+// service.start();

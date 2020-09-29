@@ -4,7 +4,8 @@ var
   https = require('http'),
   config = require('../conf/config'),
   moment = require('moment'),
-  curl = require('curlrequest');
+  curl = require('curlrequest'),
+  scheduleEidSync = require('./schedule-eid-sync.script');
 
 var Sync = {
 
@@ -15,6 +16,8 @@ var Sync = {
   records_limit: 1,
 
   processing: false,
+
+  bulkSync: false,
 
   start: function () {
     console.log('Starting EID sync');
@@ -51,6 +54,14 @@ var Sync = {
       console.log('Sync will resume at ' + Sync.nextSyncDateTime.format());
       Sync.processing = false;
       return;
+    }
+
+    const currentHour = moment().format('hh');
+    console.log('Current hour ..', currentHour);
+    if(currentHour === '14'){
+         Sync.bulkSync = true;
+         scheduleEidSync.start();
+         
     }
 
     // if(!moment().isBefore(Sync.nextSyncDateTime)) {
