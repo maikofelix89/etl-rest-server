@@ -312,7 +312,7 @@ var service = {
             date_dispatched_end: service.endDate, dispached: 1,
             facilty_code: '18776'
         };
-        const queueTable = Sync.getQueuTable(service.lab);
+        const queueTable = service.getQueuTable(service.lab);
         console.log('QueueTable', queueTable);
         return service.fetchAllPatientResults(configObj, options).then((identifiers) => {
             return service.insertPatientsWithEidResultsIntoSyncQueue(identifiers,queueTable);
