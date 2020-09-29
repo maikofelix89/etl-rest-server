@@ -58,7 +58,7 @@ var Sync = {
 
     const currentHour = moment().format('hh');
     console.log('Current hour ..', currentHour);
-    if(currentHour === '14' && Sync.bulkSync === true ){
+    if(Sync.bulkSync === true ){
   
          scheduleEidSync.start();
          Sync.bulkSync = false;
@@ -172,6 +172,7 @@ var Sync = {
               resolve('str');
             });
         } else {
+          console.log('cul parts ' + parts);
           console.log('syncing single record done. ' + patientUuId);
           resolve('str');
         }
