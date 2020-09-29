@@ -217,7 +217,7 @@ var service = {
 
 
     },
-    fetchAllViralLoad: function (configObj, options) {
+    fetchAllViralLoad: async function (configObj, options) {
         console.log('Fetching All viral load ....');
         let client = new LabClient(configObj);
         return client.fetchViralLoad(options).then((result) => {
@@ -226,7 +226,8 @@ var service = {
             console.log('VL results pages ..', result.last_page);
             for (i = 1; i <= result.last_page; i++) {
                 console.log(`Page ${i}`);
-                promises.push(client.fetchViralLoad(options, i));
+                promises.push(await client.fetchViralLoad(options, i));
+                console.log(`Page ${i} done`);
             }
             return Promise.all(promises);
         }).then((results) => {
@@ -243,7 +244,7 @@ var service = {
             return identifiers;
         });
     },
-    fetchAllCD4: function (configObj, options) {
+    fetchAllCD4: async function (configObj, options) {
         console.log('Fetching All cd4 ....');
         let client = new LabClient(configObj);
         return client.fetchCD4(options).then((result) => {
@@ -251,7 +252,8 @@ var service = {
             let i;
             for (i = 1; i <= result.last_page; i++) {
                 console.log(`CD4 Page ${i}`);
-                promises.push(client.fetchCD4(options, i));
+                promises.push(await client.fetchCD4(options, i));
+                console.log(`CD4 Page ${i} done`);
             }
             return Promise.all(promises);
         }).then((results) => {
@@ -268,15 +270,16 @@ var service = {
             return identifiers;
         });
     },
-    fetchAllDNAPCR: function (configObj, options) {
-        console.log('Fetching All cd4 ....');
+    fetchAllDNAPCR: async function (configObj, options) {
+        console.log('Fetching All DNAPCR ....');
         let client = new LabClient(configObj);
         return client.fetchDNAPCR(options).then((result) => {
             let promises = [];
             let i;
             for (i = 1; i <= result.last_page; i++) {
                 console.log(`PCR Page ${i}`);
-                promises.push(client.fetchDNAPCR(options, i));
+                promises.push(await client.fetchDNAPCR(options, i));
+                console.log(`PCR Page ${i} Done`);
             }
             return Promise.all(promises);
         }).then((results) => {
