@@ -47,6 +47,7 @@ var service = {
                 process.exit(1);
             }
             if (!startDate) {
+                console.log('no start date specified');
                 // No dates were passed in as arguments, therefore schedule for today
                 startDate = new Date();
                 startDate.setDate(startDate.getDate() - 1);
