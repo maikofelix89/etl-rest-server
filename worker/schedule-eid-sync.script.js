@@ -321,7 +321,7 @@ var service = {
             date_dispatched_start: service.startDate,
             date_dispatched_end: service.endDate, 
             dispached: 1,
-            facilty_code: '18776'
+            facility_code: '18776'
         };
         const queueTable = service.getQueuTable(service.lab);
         console.log('QueueTable', queueTable);
