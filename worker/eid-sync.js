@@ -56,7 +56,7 @@ var Sync = {
       return;
     }
 
-    const currentHour = moment().format('hh');
+    const currentHour = moment().format('HH');
     console.log('Current hour ..', currentHour);
     if(Sync.bulkSync === true ){
   

@@ -226,7 +226,8 @@ var service = {
             console.log('VL results pages ..', result.last_page);
             for (i = 1; i <= result.last_page; i++) {
                 console.log(`Page ${i}`);
-                promises.push(await client.fetchViralLoad(options, i));
+                let clientViralLoad = await client.fetchViralLoad(options, i);
+                promises.push(clientViralLoad);
                 console.log(`Page ${i} done`);
             }
             return Promise.all(promises);
@@ -252,7 +253,8 @@ var service = {
             let i;
             for (i = 1; i <= result.last_page; i++) {
                 console.log(`CD4 Page ${i}`);
-                promises.push(await client.fetchCD4(options, i));
+                const clientCd4 = await client.fetchCD4(options, i);
+                promises.push(clientCd4);
                 console.log(`CD4 Page ${i} done`);
             }
             return Promise.all(promises);
@@ -278,7 +280,8 @@ var service = {
             let i;
             for (i = 1; i <= result.last_page; i++) {
                 console.log(`PCR Page ${i}`);
-                promises.push(await client.fetchDNAPCR(options, i));
+                const clientPcr = await client.fetchDNAPCR(options, i);
+                promises.push(clientPcr);
                 console.log(`PCR Page ${i} Done`);
             }
             return Promise.all(promises);
