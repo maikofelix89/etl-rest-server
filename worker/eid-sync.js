@@ -91,7 +91,7 @@ var Sync = {
               console.log(`wait ${config.eidSyncSettings.syncInterval} seconds ..`);
               setTimeout(function(){
                 Sync.process();
-              },config.eidSyncSettings.syncInterval);
+              },Sync.syncInterval);
             })
             .catch(function (err) {
 
