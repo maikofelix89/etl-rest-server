@@ -88,8 +88,10 @@ var Sync = {
               return Sync.deleteProcessed(data);
             })
             .then(function (deleted) {
-
-              Sync.process();
+              setTimeout(() => {
+                console.log('wait for 30 seconds ...');
+                Sync.process();
+              },30000);
             })
             .catch(function (err) {
 
