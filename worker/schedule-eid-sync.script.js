@@ -25,7 +25,7 @@ var service = {
     retryInterval: 20 * 60 * 1000, // Retry every 20 minutes incase of an error
     maxTrialCount: 3, // maxinum number of attempts to schedule syncing incase of an error during 1st trial
     currentTrialCount: 0,
-    lab: '',
+    lab: 'ampath',
     weekly_sync: false,
     schedulingInProgress: false,
     start: function () {
@@ -130,12 +130,13 @@ var service = {
     },
     attemptToScheduleEidSync: function (startDate, endDate) {
         if (service.errorQueue.length === 0) {
-            service.initializeQueue(startDate, endDate);
+            // service.initializeQueue(startDate, endDate);
 
             // also pick items from previously saved error queue
         }
         // console.log('queue', service.errorQueue);
-        if (service.weekly_sync) {
+       //  if (service.weekly_sync) {
+        /*
             let startDateVlPending = format('yyyy-MM-dd', moment(new Date()).subtract(3, 'months').toDate());
             console.log('Patients with missing vl');
             service.schedulePatientsWithMissingVlPastOneYear()
@@ -157,10 +158,11 @@ var service = {
                     console.log('Exiting scheduler...');
                     process.exit(1);
                 });
-        } else {
+        */
+       //  } else {
             service.scheduleQueue()
                 .then(function (result) {
-                    // console.log('Queue passed',result)
+                    console.log('Queue passed',result)
                     // if (service.errorQueue.length === 0) {
                     console.info('*********************************');
                     console.info('Scheduling completed successfully');
@@ -170,6 +172,7 @@ var service = {
 
                     // attempt for pending vl orders
                     // Attempt to schedule patients with pending vl orders
+                    /*
                     var startDateVlPending = format('yyyy-MM-dd', moment(new Date()).subtract(3, 'months').toDate());
                     service.schedulePatientsWithPendingOrders(startDateVlPending)
                         .then(function (results) {
@@ -207,6 +210,7 @@ var service = {
                             console.log('Exiting scheduler...');
                             process.exit(1);
                         });
+                    */
 
                 })
                 .catch(function (error) {
@@ -215,16 +219,19 @@ var service = {
                     console.log('An expected error happened while scheduling...');
                     process.exit(1);
                 });
-        }
+         // }
 
 
     },
     fetchAllViralLoad: function (configObj, options) {
+        console.log('Fetching All viral load ....');
         let client = new LabClient(configObj);
         return client.fetchViralLoad(options).then((result) => {
             let promises = [];
             let i;
+            console.log('VL results pages ..', result.last_page);
             for (i = 1; i <= result.last_page; i++) {
+                console.log(`Page ${i}`);
                 promises.push(client.fetchViralLoad(options, i));
             }
             return Promise.all(promises);
@@ -243,11 +250,13 @@ var service = {
         });
     },
     fetchAllCD4: function (configObj, options) {
+        console.log('Fetching All cd4 ....');
         let client = new LabClient(configObj);
         return client.fetchCD4(options).then((result) => {
             let promises = [];
             let i;
             for (i = 1; i <= result.last_page; i++) {
+                console.log(`CD4 Page ${i}`);
                 promises.push(client.fetchCD4(options, i));
             }
             return Promise.all(promises);
@@ -266,11 +275,13 @@ var service = {
         });
     },
     fetchAllDNAPCR: function (configObj, options) {
+        console.log('Fetching All cd4 ....');
         let client = new LabClient(configObj);
         return client.fetchDNAPCR(options).then((result) => {
             let promises = [];
             let i;
             for (i = 1; i <= result.last_page; i++) {
+                console.log(`PCR Page ${i}`);
                 promises.push(client.fetchDNAPCR(options, i));
             }
             return Promise.all(promises);
@@ -304,11 +315,30 @@ var service = {
         let configObj = config.hivLabSystem[service.lab];
         let options = {
             date_dispatched_start: service.startDate,
-            date_dispatched_end: service.endDate, dispached: 1
+            date_dispatched_end: service.endDate, dispached: 1,
+            facilty_code: '18776'
         };
+        const queueTable = Sync.getQueuTable(service.lab);
+        console.log('QueueTable', queueTable);
         return service.fetchAllPatientResults(configObj, options).then((identifiers) => {
-            return service.insertPatientsWithEidResultsIntoSyncQueue(identifiers);
+            return service.insertPatientsWithEidResultsIntoSyncQueue(identifiers,queueTable);
         });
+    },
+    getQueuTable: function(lab){
+        let queueTable = '';
+        switch(lab){
+          case 'ampath':
+            queueTable = 'eid_sync_queue_test';
+           break;
+          case 'alupe':
+            queueTable = 'eid_sync_queue_test';
+            break;
+          default:
+              queueTable = 'eid_sync_queue_test';
+
+        };
+        return queueTable;
+
     },
     scheduleEidSyncPerServerPerType: function (queueItem) {
         queueItem.trial++;
@@ -392,7 +422,7 @@ var service = {
             }
         });
     },
-    insertPatientsWithEidResultsIntoSyncQueue: function (patientIdentifiers) {
+    insertPatientsWithEidResultsIntoSyncQueue: function (patientIdentifiers,queueTable) {
 
         return new Promise(function (resolve, reject) {
         console.log('patientIdentifiers', patientIdentifiers);
@@ -408,7 +438,7 @@ var service = {
         
                 console.log('Results...', results);
         
-                var sql = 'replace into etl.eid_sync_queue(person_uuid) select distinct p.uuid from amrs.person p left join amrs.patient_identifier i on p.person_id = i.patient_id where identifier in (?)';
+                var sql = `replace into etl.${queueTable}(person_uuid) select distinct p.uuid from amrs.person p left join amrs.patient_identifier i on p.person_id = i.patient_id where identifier in (?)`;
                 sql = sql.replace('?', results);
                 console.log('sql....', sql);
         

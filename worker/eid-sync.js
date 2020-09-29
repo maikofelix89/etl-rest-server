@@ -8,7 +8,7 @@ var
 
 var Sync = {
 
-  timeout: 3000,
+  timeout: 30000,
 
   nextSyncDateTime: moment().subtract(1, 'minute'),
 
