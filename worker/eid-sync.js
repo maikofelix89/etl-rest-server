@@ -49,7 +49,7 @@ var Sync = {
     }else{
        Sync.syncInterval = config.eidSyncSettings.syncInterval;
     }
-    console.log('SyncInterval', Sync.syncInterval);
+    console.log('SyncInterval...', Sync.syncInterval);
 
     //sync records after working hours only
     // if (today >= 7 && today <= 17) {
