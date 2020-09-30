@@ -45,7 +45,7 @@ var Sync = {
     let currentHour = moment().format('HH');
     console.log('Current Hour', currentHour);
     if(currentHour >= 20 && currentHour <= 4){
-       Sync.syncInterval = 50;
+       Sync.syncInterval = config.eidSyncSettings.syncInterval;
     }else{
        Sync.syncInterval = config.eidSyncSettings.syncInterval;
     }
