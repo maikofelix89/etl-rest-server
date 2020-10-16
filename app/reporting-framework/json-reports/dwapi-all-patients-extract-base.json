@@ -1,0 +1,252 @@
+{
+  "name": "dwapiAllPatientsExtractBase",
+  "version": "1.0",
+  "tag": "",
+  "description": "",
+  "uses": [
+  ],
+  "sources": [
+      {
+          "table": "ndwr.ndwr_all_patients_extract",
+          "alias": "ap"
+      }
+  ],
+  "columns": [
+      {
+          "type": "simple_column",
+          "alias": "PatientPK",
+          "column": "ap.PatientPK"
+      },
+      {
+        "type": "simple_column",
+        "alias": "PatientID",
+        "column": "ap.PatientID"
+      },
+      {
+        "type": "simple_column",
+        "alias": "FacilityID",
+        "column": "ap.FacilityID"
+      },
+      {
+        "type": "simple_column",
+        "alias": "SiteCode",
+        "column": "ap.SiteCode"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Emr",
+        "column": "ap.Emr"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Project",
+        "column": "ap.Project"
+      },
+      {
+        "type": "simple_column",
+        "alias": "FacilityName",
+        "column": "ap.FacilityName"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Gender",
+        "column": "ap.Gender"
+      },
+      {
+        "type": "derived_column",
+        "alias": "DOB",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.DOB,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "derived_column",
+        "alias": "RegistrationDate",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.RegistrationDate,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "derived_column",
+        "alias": "RegistrationAtCCC",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.RegistrationAtCCC,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "derived_column",
+        "alias": "RegistrationAtPMTCT",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.RegistrationAtPMTCT,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "RegistrationAtTBClinic",
+        "column": "ap.RegistrationAtTBClinic"
+      },
+      {
+        "type": "simple_column",
+        "alias": "PatientSource",
+        "column": "ap.PatientSource"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Region",
+        "column": "ap.Region"
+      },
+      {
+        "type": "simple_column",
+        "alias": "District",
+        "column": "ap.District"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Village",
+        "column": "ap.Village"
+      },
+      {
+        "type": "simple_column",
+        "alias": "ContactRelation",
+        "column": "ap.ContactRelation"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Village",
+        "column": "ap.Village"
+      },
+      {
+        "type": "derived_column",
+        "alias": "LastVisit",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.LastVisit,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "Village",
+        "column": "ap.Village"
+      },
+      {
+        "type": "simple_column",
+        "alias": "MaritalStatus",
+        "column": "ap.MaritalStatus"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Village",
+        "column": "ap.Village"
+      },
+      {
+        "type": "simple_column",
+        "alias": "EducationLevel",
+        "column": "ap.EducationLevel"
+      },
+      {
+        "type": "simple_column",
+        "alias": "PreviousARTExposure",
+        "column": "ap.PreviousARTExposure"
+      },
+      {
+        "type": "simple_column",
+        "alias": "PreviousARTStartDate",
+        "column": "ap.PreviousARTStartDate"
+      },
+      {
+        "type": "simple_column",
+        "alias": "StatusAtCCC",
+        "column": "ap.StatusAtCCC"
+      },
+      {
+        "type": "simple_column",
+        "alias": "StatusAtPMTCT",
+        "column": "ap.StatusAtPMTCT"
+      },
+      {
+        "type": "simple_column",
+        "alias": "StatusAtTBClinic",
+        "column": "ap.StatusAtTBClinic"
+      },
+      {
+        "type": "simple_column",
+        "alias": "SatelliteName",
+        "column": "ap.SatelliteName"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Inschool",
+        "column": "ap.Inschool"
+      },
+      {
+        "type": "simple_column",
+        "alias": "KeyPopulationType",
+        "column": "ap.KeyPopulationType"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Orphan",
+        "column": "ap.Orphan"
+      },
+      {
+        "type": "simple_column",
+        "alias": "PatientResidentCounty",
+        "column": "ap.PatientResidentCounty"
+      },
+      {
+        "type": "simple_column",
+        "alias": "PatientResidentLocation",
+        "column": "ap.PatientResidentLocation"
+      },
+      {
+        "type": "simple_column",
+        "alias": "PatientResidentSubCounty",
+        "column": "ap.PatientResidentSubCounty"
+      },
+      {
+        "type": "simple_column",
+        "alias": "PatientResidentSubLocation",
+        "column": "ap.PatientResidentSubLocation"
+      },
+      {
+        "type": "simple_column",
+        "alias": "PatientResidentVillage",
+        "column": "ap.PatientResidentVillage"
+      },
+      {
+        "type": "simple_column",
+        "alias": "PatientResidentWard",
+        "column": "ap.PatientResidentWard"
+      },
+      {
+        "type": "simple_column",
+        "alias": "PatientType",
+        "column": "ap.PatientType"
+      },
+      {
+        "type": "simple_column",
+        "alias": "PopulationType",
+        "column": "ap.PopulationType"
+      },
+      {
+        "type": "simple_column",
+        "alias": "TransferInDate",
+        "column": "ap.TransferInDate"
+      }
+      
+  ],
+  "filters": {
+      "conditionJoinOperator": "and",
+      "conditions": [
+          {
+              "filterType": "tableColumns",
+              "conditionExpression": "SiteCode in ?",
+              "parameterName": "mflCodes"
+          }
+      ]
+  }
+}

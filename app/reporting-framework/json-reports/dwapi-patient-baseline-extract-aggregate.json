@@ -1,0 +1,49 @@
+{
+  "name": "dwapiPatientBaselineExtractAggregate",
+  "version": "1.0",
+  "tag": "",
+  "description": "",
+  "uses": [
+      {
+          "name": "dwapiPatientBaselineExtractBase",
+          "version": "1.0",
+          "type": "dataset_def"
+      }
+  ],
+  "sources": [
+      {
+          "dataSet": "dwapiPatientBaselineExtractBase",
+          "alias": "dae"
+      }
+  ],
+  "columns": [
+      {
+          "type": "derived_column",
+          "alias": "all_patients",
+          "expressionType": "simple_expression",
+          "expressionOptions": {
+              "expression": "count(*)"
+          }
+      }
+  ],
+  "groupBy": {
+      "groupParam": "groupByParam",
+      "columns": [
+      ],
+      "excludeParam": "excludeParam"
+  },
+  "dynamicJsonQueryGenerationDirectives": {
+      "patientListGenerator": {
+          "useTemplate": "patient-list-template",
+          "useTemplateVersion": "1.0",
+          "generatingDirectives": {
+              "joinDirectives": {
+                  "joinType": "INNER",
+                  "joinCondition": "<<base_column>> = <<template_column>>",
+                  "baseColumn": "PatientID",
+                  "templateColumn": "person_id"
+              }
+          }
+      }
+  }
+}

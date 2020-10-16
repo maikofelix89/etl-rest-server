@@ -1,0 +1,200 @@
+{
+  "name": "dwapiPatientBaselineExtractBase",
+  "version": "1.0",
+  "tag": "",
+  "description": "",
+  "uses": [
+  ],
+  "sources": [
+      {
+          "table": "ndwr.ndwr_patient_baselines_extract",
+          "alias": "ap"
+      }
+  ],
+  "columns": [
+      {
+          "type": "simple_column",
+          "alias": "PatientPK",
+          "column": "ap.PatientPK"
+      },
+      {
+        "type": "simple_column",
+        "alias": "PatientID",
+        "column": "ap.PatientID"
+      },
+      {
+        "type": "simple_column",
+        "alias": "FacilityID",
+        "column": "ap.FacilityID"
+      },
+      {
+        "type": "simple_column",
+        "alias": "SiteCode",
+        "column": "ap.SiteCode"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Emr",
+        "column": "ap.Emr"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Project",
+        "column": "ap.Project"
+      },
+      {
+        "type": "simple_column",
+        "alias": "bCD4",
+        "column": "ap.bCD4"
+      },
+      {
+        "type": "derived_column",
+        "alias": "bCD4Date",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.bCD4Date,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "bWAB",
+        "column": "ap.bWAB"
+      },
+      {
+        "type": "derived_column",
+        "alias": "bWABDate",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.bWABDate,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "bWHO",
+        "column": "ap.bWHO"
+      },
+      {
+        "type": "derived_column",
+        "alias": "bWHODate",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.bWHODate,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "eWAB",
+        "column": "ap.eWAB"
+      },
+      {
+        "type": "derived_column",
+        "alias": "eWABDate",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.eWABDate,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "eCD4",
+        "column": "ap.eCD4"
+      },
+      {
+        "type": "derived_column",
+        "alias": "eCD4Date",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.eCD4Date,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "eWHO",
+        "column": "ap.eWHO"
+      },
+      {
+        "type": "derived_column",
+        "alias": "eWHODate",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.eWHODate,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "lastWHO",
+        "column": "ap.lastWHO"
+      },
+      {
+        "type": "derived_column",
+        "alias": "lastWHODate",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.lastWHODate,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "lastCD4",
+        "column": "ap.lastCD4"
+      },
+      {
+        "type": "derived_column",
+        "alias": "lastCD4Date",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.lastCD4Date,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "lastWAB",
+        "column": "ap.lastWAB"
+      },
+      {
+        "type": "derived_column",
+        "alias": "lastWABDate",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.lastWABDate,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "m12CD4",
+        "column": "ap.m12CD4"
+      },
+      {
+        "type": "derived_column",
+        "alias": "m12CD4Date",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.m12CD4Date,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "m6CD4",
+        "column": "ap.m6CD4"
+      },
+      {
+        "type": "derived_column",
+        "alias": "m6CD4Date",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.m6CD4Date,'%Y-%m-%d')"
+        }
+      }
+      
+  ],
+  "filters": {
+      "conditionJoinOperator": "and",
+      "conditions": [
+          {
+              "filterType": "tableColumns",
+              "conditionExpression": "SiteCode in ?",
+              "parameterName": "mflCodes"
+          }
+      ]
+  }
+}

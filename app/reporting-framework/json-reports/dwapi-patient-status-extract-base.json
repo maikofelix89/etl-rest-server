@@ -1,0 +1,80 @@
+{
+  "name": "dwapiPatientStatusExtractBase",
+  "version": "1.0",
+  "tag": "",
+  "description": "",
+  "uses": [
+  ],
+  "sources": [
+      {
+          "table": "ndwr.ndwr_all_patient_status_extract",
+          "alias": "ap"
+      }
+  ],
+  "columns": [
+      {
+          "type": "simple_column",
+          "alias": "PatientPK",
+          "column": "ap.PatientPK"
+      },
+      {
+        "type": "simple_column",
+        "alias": "PatientID",
+        "column": "ap.PatientID"
+      },
+      {
+        "type": "simple_column",
+        "alias": "FacilityID",
+        "column": "ap.FacilityID"
+      },
+      {
+        "type": "simple_column",
+        "alias": "SiteCode",
+        "column": "ap.SiteCode"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Emr",
+        "column": "ap.Emr"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Project",
+        "column": "ap.Project"
+      },
+      {
+        "type": "simple_column",
+        "alias": "FacilityName",
+        "column": "ap.FacilityName"
+      },
+      {
+        "type": "simple_column",
+        "alias": "ExitDescription",
+        "column": "ap.ExitDescription"
+      },
+      {
+        "type": "derived_column",
+        "alias": "ExitDate",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.ExitDate,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "ExitReason",
+        "column": "ap.ExitReason"
+      }
+      
+  ],
+  "filters": {
+      "conditionJoinOperator": "and",
+      "conditions": [
+          {
+              "filterType": "tableColumns",
+              "conditionExpression": "SiteCode in ?",
+              "parameterName": "mflCodes"
+          }
+      ]
+  }
+}

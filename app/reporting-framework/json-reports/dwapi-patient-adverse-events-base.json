@@ -1,0 +1,106 @@
+{
+  "name": "dwapiPatientAdverseEventsBase",
+  "version": "1.0",
+  "tag": "",
+  "description": "",
+  "uses": [
+  ],
+  "sources": [
+      {
+          "table": "ndwr.ndwr_patient_adverse_events",
+          "alias": "ap"
+      }
+  ],
+  "columns": [
+      {
+          "type": "simple_column",
+          "alias": "PatientPK",
+          "column": "ap.PatientPK"
+      },
+      {
+        "type": "simple_column",
+        "alias": "PatientID",
+        "column": "ap.PatientID"
+      },
+      {
+        "type": "simple_column",
+        "alias": "FacilityID",
+        "column": "ap.FacilityID"
+      },
+      {
+        "type": "simple_column",
+        "alias": "SiteCode",
+        "column": "ap.SiteCode"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Emr",
+        "column": "ap.Emr"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Project",
+        "column": "ap.Project"
+      },
+      {
+        "type": "simple_column",
+        "alias": "AdverseEvent",
+        "column": "ap.AdverseEvent"
+      },
+      {
+        "type": "simple_column",
+        "alias": "AdverseEventStartDate",
+        "column": "ap.AdverseEventStartDate"
+      },
+      {
+        "type": "simple_column",
+        "alias": "AdverseEventEndDate",
+        "column": "ap.AdverseEventEndDate"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Severity",
+        "column": "ap.Severity"
+      },
+      {
+        "type": "simple_column",
+        "alias": "VisitDate",
+        "column": "ap.VisitDate"
+      },
+      {
+        "type": "simple_column",
+        "alias": "AdverseEventActionTaken",
+        "column": "ap.AdverseEventActionTaken"
+      },
+      {
+        "type": "simple_column",
+        "alias": "AdverseEventClinicalOutcome",
+        "column": "ap.AdverseEventClinicalOutcome"
+      },
+      {
+        "type": "simple_column",
+        "alias": "AdverseEventIsPregnant",
+        "column": "ap.AdverseEventIsPregnant"
+      },
+      {
+        "type": "simple_column",
+        "alias": "AdverseEventCause",
+        "column": "ap.AdverseEventCause"
+      },
+      {
+        "type": "simple_column",
+        "alias": "AdverseEventRegimen",
+        "column": "ap.AdverseEventRegimen"
+      }
+  ],
+  "filters": {
+      "conditionJoinOperator": "and",
+      "conditions": [
+          {
+              "filterType": "tableColumns",
+              "conditionExpression": "SiteCode in ?",
+              "parameterName": "mflCodes"
+          }
+      ]
+  }
+}

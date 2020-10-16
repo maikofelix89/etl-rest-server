@@ -1,0 +1,116 @@
+{
+  "name": "dwapiPatientPharmacyBase",
+  "version": "1.0",
+  "tag": "",
+  "description": "",
+  "uses": [
+  ],
+  "sources": [
+      {
+          "table": "ndwr.ndwr_pharmacy",
+          "alias": "ap"
+      }
+  ],
+  "columns": [
+      {
+          "type": "simple_column",
+          "alias": "PatientPK",
+          "column": "ap.PatientPK"
+      },
+      {
+        "type": "simple_column",
+        "alias": "PatientID",
+        "column": "ap.PatientID"
+      },
+      {
+        "type": "simple_column",
+        "alias": "FacilityID",
+        "column": "ap.FacilityID"
+      },
+      {
+        "type": "simple_column",
+        "alias": "SiteCode",
+        "column": "ap.SiteCode"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Emr",
+        "column": "ap.Emr"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Project",
+        "column": "ap.Project"
+      },
+      {
+        "type": "simple_column",
+        "alias": "VisitID",
+        "column": "ap.VisitID"
+      },
+      {
+        "type": "derived_column",
+        "alias": "Drug",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "REPLACE(Drug, '##', '+')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "Provider",
+        "column": "ap.Provider"
+      },
+      {
+        "type": "derived_column",
+        "alias": "DispenseDate",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.DispenseDate,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "Duration",
+        "column": "ap.Duration"
+      },
+      {
+        "type": "derived_column",
+        "alias": "DispenseDate",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(IF(ExpectedReturn IS NULL || DATE(ExpectedReturn) = '0000-00-00',DATE_ADD(DispenseDate, INTERVAL 21 DAY),ExpectedReturn),'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "TreatmentType",
+        "column": "ap.TreatmentType"
+      },
+      {
+        "type": "simple_column",
+        "alias": "RegimenLine",
+        "column": "ap.RegimenLine"
+      },
+      {
+        "type": "simple_column",
+        "alias": "PeriodTaken",
+        "column": "ap.PeriodTaken"
+      },
+      {
+        "type": "simple_column",
+        "alias": "ProphylaxisType",
+        "column": "ap.ProphylaxisType"
+      }
+      
+  ],
+  "filters": {
+      "conditionJoinOperator": "and",
+      "conditions": [
+          {
+              "filterType": "tableColumns",
+              "conditionExpression": "SiteCode in ?",
+              "parameterName": "mflCodes"
+          }
+      ]
+  }
+}

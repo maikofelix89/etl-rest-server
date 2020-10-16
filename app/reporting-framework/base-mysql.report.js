@@ -174,6 +174,24 @@ import * as hei_unknown_program_outcome_aggregate from './json-reports/hei-unkno
 import * as hei_unknown_program_outcome_base from './json-reports/hei-unknown-program-outcome-base.json';
 import * as hei_report_patient_list_template from './json-reports/hei-report-patient-list-template.json';
 
+import * as dwapi_all_patient_extract_aggregate from './json-reports/dwapi-all-patients-extract-aggregate.json';
+import * as dwapi_all_patient_extract_base from './json-reports/dwapi-all-patients-extract-base.json';
+import * as dwapi_patient_art_extract_aggregate from './json-reports/dwapi-patient-art-extract-aggregate.json';
+import * as dwapi_patient_art_extract_base from './json-reports/dwapi-patient-art-extract-base.json';
+import * as dwapi_patient_baseline_extract_aggregate from './json-reports/dwapi-patient-baseline-extract-aggregate.json';
+import * as dwapi_patient_baseline_extract_base from './json-reports/dwapi-patient-baseline-extract-base.json';
+import * as dwapi_patient_status_extract_aggregate from './json-reports/dwapi-patient-status-extract-aggregate.json';
+import * as dwapi_patient_status_extract_base from './json-reports/dwapi-patient-status-extract-base.json';
+import * as dwapi_patient_labs_extract_aggregate from './json-reports/dwapi-patient-labs-extract-aggregate.json';
+import * as dwapi_patient_labs_extract_base from './json-reports/dwapi-patient-labs-extract-base.json';
+import * as dwapi_patient_pharmacy_aggregate from './json-reports/dwapi-patient-pharmacy-aggregate.json';
+import * as dwapi_patient_pharmacy_base from './json-reports/dwapi-patient-pharmacy-base.json';
+import * as dwapi_patient_list_template from './json-reports/dwapi-patient-list-template.json';
+import * as dwapi_patient_visits_extract_base from './json-reports/dwapi-patient-visits-extract-base.json';
+import * as dwapi_patient_visits_extract_aggregate from './json-reports/dwapi-patient-visits-extract-aggregate.json';
+import * as dwapi_patient_adverse_events_base from './json-reports/dwapi-patient-adverse-events-base.json';
+import * as dwapi_patient_adverse_events_aggregate from './json-reports/dwapi-patient-adverse-events-aggregate.json';
+
 export class BaseMysqlReport {
     constructor(reportName, params) {
         this.reportName = reportName;
@@ -263,6 +281,11 @@ export class BaseMysqlReport {
                 case 'patient-list-prep-template':
                     resolve({
                         main: this.cloneJsonSchema(patient_list_prep_template)
+                    });
+                    break;
+                case 'dwapi-patient-list-template':
+                    resolve({
+                        main: this.cloneJsonSchema(dwapi_patient_list_template)
                     });
                     break;
                 case 'mainDatasetAggregate':
@@ -743,6 +766,70 @@ export class BaseMysqlReport {
                             main: this.cloneJsonSchema(hei_report_patient_list_template)
                         });
                         break;
+                case 'dwapiAllPatientsExtractAggregate':
+                       resolve(
+                           {
+                               main: this.cloneJsonSchema(dwapi_all_patient_extract_aggregate),
+                               dwapiAllPatientsExtractBase: this.cloneJsonSchema(dwapi_all_patient_extract_base)
+                           }
+                       );
+                break;
+                case 'dwapiPatientARTExtractAggregate':
+                    resolve(
+                        {
+                            main: this.cloneJsonSchema(dwapi_patient_art_extract_aggregate),
+                            dwapiPatientARTExtractBase: this.cloneJsonSchema(dwapi_patient_art_extract_base)
+                        }
+                    );
+                break;
+                case 'dwapiPatientBaselineExtractAggregate':
+                    resolve(
+                        {
+                            main: this.cloneJsonSchema(dwapi_patient_baseline_extract_aggregate),
+                            dwapiPatientBaselineExtractBase: this.cloneJsonSchema(dwapi_patient_baseline_extract_base)
+                        }
+                    );
+                break;
+                case 'dwapiPatientStatusExtractAggregate':
+                    resolve(
+                        {
+                            main: this.cloneJsonSchema(dwapi_patient_status_extract_aggregate),
+                            dwapiPatientStatusExtractBase: this.cloneJsonSchema(dwapi_patient_status_extract_base)
+                        }
+                    );
+                break;
+                case 'dwapiPatientLabsExtractAggregate':
+                    resolve(
+                        {
+                            main: this.cloneJsonSchema(dwapi_patient_labs_extract_aggregate),
+                            dwapiPatientLabsExtractBase: this.cloneJsonSchema(dwapi_patient_labs_extract_base)
+                        }
+                    );
+                break;
+                case 'dwapiPatientPharmacyAggregate':
+                    resolve(
+                        {
+                            main: this.cloneJsonSchema(dwapi_patient_pharmacy_aggregate),
+                            dwapiPatientPharmacyBase: this.cloneJsonSchema(dwapi_patient_pharmacy_base)
+                        }
+                    );
+                break;
+                case 'dwapiPatientVisitsExtractAggregate':
+                    resolve(
+                        {
+                            main: this.cloneJsonSchema(dwapi_patient_visits_extract_aggregate),
+                            dwapiPatientVisitsExtractBase: this.cloneJsonSchema(dwapi_patient_visits_extract_base)
+                        }
+                    );
+                break;
+                case 'dwapiPatientAdverseEventsAggregate':
+                    resolve(
+                        {
+                            main: this.cloneJsonSchema(dwapi_patient_adverse_events_aggregate),
+                            dwapiPatientAdverseEventsBase: this.cloneJsonSchema(dwapi_patient_adverse_events_base)
+                        }
+                    );
+                break;
                 default:
                     reject('Unknown report ', reportName);
                     break;

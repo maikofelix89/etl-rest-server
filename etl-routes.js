@@ -72,6 +72,8 @@ import {
     RetentionAppointmentTracingService 
 } from './service/retention-appointment-tracing-service';
 
+var DwapiService = require('./app/dwapi/dwapi-service');
+
 
 module.exports = function () {
 
@@ -4855,6 +4857,88 @@ module.exports = function () {
                     notes: 'Returns HEI summary patient list',
                     tags: ['api'],
                 }
+                },
+                {
+                    method: 'GET',
+                    path: '/etl/dwapi/mfl-sites',
+                    config: {
+                        auth: 'simple',
+                        plugins: {
+                            
+                        },
+                        handler: function (request, reply) {
+
+                            DwapiService.getMFLSites()
+                            .then((results) => {
+                                reply(results.result);
+                            })
+                            .catch((error) => {
+                                reply(Boom.internal('An error occured', error));
+                            });
+    
+                        },
+                        description: 'List of MFL Sites',
+                        notes: 'Returns a list of MFL Sites',
+                        tags: ['api'],
+                    }
+                },
+                {
+                    method: 'GET',
+                    path: '/etl/dwapi/set-mfl-site',
+                    config: {
+                        auth: 'simple',
+                        plugins: {
+                            
+                        },
+                        handler: function (request, reply) {
+
+                            let requestParams = Object.assign({}, request.query, request.params);
+
+                            let requestCopy = _.cloneDeep(requestParams);
+                            requestCopy.mflCodes = (requestParams.mflCodes).split(',');
+                            DwapiService.setSelectedMFLSite(requestCopy)
+                            .then((results) => {
+                                      reply(results);
+                            })
+                            .catch((error) => {
+                                console.log('Error', error);
+                                reply(Boom.internal('An error occured', error));
+                            });
+    
+                        },
+                        description: 'List of MFL Sites',
+                        notes: 'Returns a list of MFL Sites',
+                        tags: ['api'],
+                    }
+                },
+                {
+                    method: 'GET',
+                    path: '/etl/dwapi/dwapi-report',
+                    config: {
+                        auth: 'simple',
+                        plugins: {
+                            
+                        },
+                        handler: function (request, reply) {
+
+                            let requestParams = Object.assign({}, request.query, request.params);
+
+                            let requestCopy = _.cloneDeep(requestParams);
+                            requestCopy.mflCodes = (requestParams.mflCodes).split(',');
+                           
+                            DwapiService.getPatientListReport(requestCopy)
+                                .then((result) => {
+                                      console.log('Results', result);
+                                      reply(result);
+                                }).catch((error)=> {
+                                      console.log('Error', error);
+                                });
+    
+                        },
+                        description: 'List of MFL Sites',
+                        notes: 'Returns a list of MFL Sites',
+                        tags: ['api'],
+                    }
                 }
 
         ];

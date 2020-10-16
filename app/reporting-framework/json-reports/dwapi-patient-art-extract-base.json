@@ -1,0 +1,202 @@
+{
+  "name": "dwapiPatientARTExtractBase",
+  "version": "1.0",
+  "tag": "",
+  "description": "",
+  "uses": [
+  ],
+  "sources": [
+      {
+          "table": "ndwr.ndwr_patient_art_extract",
+          "alias": "ap"
+      }
+  ],
+  "columns": [
+      {
+          "type": "simple_column",
+          "alias": "PatientPK",
+          "column": "ap.PatientPK"
+      },
+      {
+        "type": "simple_column",
+        "alias": "PatientID",
+        "column": "ap.PatientID"
+      },
+      {
+        "type": "simple_column",
+        "alias": "FacilityID",
+        "column": "ap.FacilityID"
+      },
+      {
+        "type": "simple_column",
+        "alias": "SiteCode",
+        "column": "ap.SiteCode"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Emr",
+        "column": "ap.Emr"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Project",
+        "column": "ap.Project"
+      },
+      {
+        "type": "simple_column",
+        "alias": "FacilityName",
+        "column": "ap.FacilityName"
+      },
+      {
+        "type": "derived_column",
+        "alias": "DOB",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.DOB,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "AgeEnrollment",
+        "column": "ap.AgeEnrollment"
+      },
+      {
+        "type": "simple_column",
+        "alias": "AgeARTStart",
+        "column": "ap.AgeARTStart"
+      },
+      {
+        "type": "simple_column",
+        "alias": "AgeLastVisit",
+        "column": "ap.AgeLastVisit"
+      },
+      {
+        "type": "derived_column",
+        "alias": "RegistrationDate",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.RegistrationDate,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "PatientSource",
+        "column": "ap.PatientSource"
+      },
+      {
+        "type": "derived_column",
+        "alias": "StartARTDate",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.StartARTDate,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "derived_column",
+        "alias": "PreviousARTStartDate",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.PreviousARTStartDate,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "PreviousARTRegimen",
+        "column": "ap.PreviousARTRegimen"
+      },
+      {
+        "type": "simple_column",
+        "alias": "StartARTAtThisFacility",
+        "column": "ap.StartARTAtThisFacility"
+      },
+      {
+        "type": "derived_column",
+        "alias": "StartRegimen",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "REPLACE(ap.StartRegimen, '##', '+')"
+        }
+      },
+      {
+        "type": "derived_column",
+        "alias": "StartRegimenLine",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "IF(StartRegimenLine IS NULL,1,StartRegimenLine)"
+        }
+      },
+      {
+        "type": "derived_column",
+        "alias": "LastARTDate",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.LastARTDate,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "derived_column",
+        "alias": "LastRegimen",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "REPLACE(ap.LastRegimen, '##', '+')"
+        }
+      },
+      {
+        "type": "derived_column",
+        "alias": "LastRegimenLine",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "IF(LastRegimenLine IS NULL,1,LastRegimenLine)"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "Duration",
+        "column": "ap.Duration"
+      },
+      {
+        "type": "derived_column",
+        "alias": "ExpectedReturn",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(IF(ExpectedReturn = NULL,DATE_ADD(LastVisit, INTERVAL 21 DAY),LastVisit),'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "Provider",
+        "column": "ap.Provider"
+      },
+      {
+        "type": "derived_column",
+        "alias": "LastVisit",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.LastVisit,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "ExitReason",
+        "column": "ap.ExitReason"
+      },
+      {
+        "type": "derived_column",
+        "alias": "ExitDate",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.ExitDate,'%Y-%m-%d')"
+        }
+      }    
+  ],
+  "filters": {
+      "conditionJoinOperator": "and",
+      "conditions": [
+          {
+              "filterType": "tableColumns",
+              "conditionExpression": "SiteCode in ?",
+              "parameterName": "mflCodes"
+          }
+      ]
+  }
+}

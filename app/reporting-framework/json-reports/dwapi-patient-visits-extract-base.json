@@ -1,0 +1,245 @@
+{
+  "name": "dwapiPatientVisitsExtractBase",
+  "version": "1.0",
+  "tag": "",
+  "description": "",
+  "uses": [
+  ],
+  "sources": [
+      {
+          "table": "ndwr.ndwr_all_patient_visits_extract",
+          "alias": "ap"
+      }
+  ],
+  "columns": [
+      {
+          "type": "simple_column",
+          "alias": "PatientPK",
+          "column": "ap.PatientPK"
+      },
+      {
+        "type": "simple_column",
+        "alias": "PatientID",
+        "column": "ap.PatientID"
+      },
+      {
+        "type": "simple_column",
+        "alias": "FacilityID",
+        "column": "ap.FacilityID"
+      },
+      {
+        "type": "simple_column",
+        "alias": "SiteCode",
+        "column": "ap.SiteCode"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Emr",
+        "column": "ap.Emr"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Project",
+        "column": "ap.Project"
+      },
+      {
+        "type": "simple_column",
+        "alias": "FacilityName",
+        "column": "ap.FacilityName"
+      },
+      {
+        "type": "simple_column",
+        "alias": "VisitID",
+        "column": "ap.VisitID"
+      },
+      {
+        "type": "derived_column",
+        "alias": "VisitDate",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(ap.VisitDate,'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "Service",
+        "column": "ap.Service"
+      },
+      {
+        "type": "simple_column",
+        "alias": "VisitType",
+        "column": "ap.VisitType"
+      },
+      {
+        "type": "simple_column",
+        "alias": "WHOStage",
+        "column": "ap.WHOStage"
+      },
+      {
+        "type": "simple_column",
+        "alias": "WABStage",
+        "column": "ap.WABStage"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Pregnant",
+        "column": "ap.Pregnant"
+      },
+      {
+        "type": "derived_column",
+        "alias": "LMP",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "IF(ap.LMP, ap.LMP, NULL)"
+        }
+      },
+      {
+        "type": "derived_column",
+        "alias": "EDD",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "IF(ap.EDD, ap.EDD, NULL)"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "Height",
+        "column": "ap.Height"
+      },
+      {
+        "type": "simple_column",
+        "alias": "Weight",
+        "column": "ap.Weight"
+      },
+      {
+        "type": "simple_column",
+        "alias": "BP",
+        "column": "ap.BP"
+      },
+      {
+        "type": "simple_column",
+        "alias": "OI",
+        "column": "ap.OI"
+      },
+      {
+        "type": "simple_column",
+        "alias": "OI",
+        "column": "ap.OI"
+      },
+      {
+        "type": "derived_column",
+        "alias": "OIDate",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(IF(OIDate, OIDate, NULL),'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "Adherence",
+        "column": "ap.Adherence"
+      },
+      {
+        "type": "simple_column",
+        "alias": "AdherenceCategory",
+        "column": "ap.AdherenceCategory"
+      },
+      {
+        "type": "derived_column",
+        "alias": "SubstitutionFirstlineRegimenDate",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(IF(SubstitutionFirstlineRegimenDate,SubstitutionFirstlineRegimenDate,NULL),'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "SubstitutionFirstlineRegimenReason",
+        "column": "ap.SubstitutionFirstlineRegimenReason"
+      },
+      {
+        "type": "derived_column",
+        "alias": "SubstitutionSecondlineRegimenDate",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(IF(SubstitutionSecondlineRegimenDate,SubstitutionSecondlineRegimenDate,NULL),'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "SubstitutionSecondlineRegimenReason",
+        "column": "ap.SubstitutionSecondlineRegimenReason"
+      },
+      {
+        "type": "derived_column",
+        "alias": "SecondlineRegimenChangeDate",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(IF(SecondlineRegimenChangeDate,SecondlineRegimenChangeDate,NULL),'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "SecondlineRegimenChangeReason",
+        "column": "ap.SecondlineRegimenChangeReason"
+      },
+      {
+        "type": "simple_column",
+        "alias": "FamilyPlanningMethod",
+        "column": "ap.FamilyPlanningMethod"
+      },
+      {
+        "type": "simple_column",
+        "alias": "PwP",
+        "column": "ap.PwP"
+      },
+      {
+        "type": "simple_column",
+        "alias": "GestationAge",
+        "column": "ap.GestationAge"
+      },
+      {
+        "type": "derived_column",
+        "alias": "SecondlineRegimenChangeDate",
+        "expressionType": "simple_expression",
+        "expressionOptions": {
+            "expression": "DATE_FORMAT(IF(ap.NextAppointmentDate,ap.NextAppointmentDate,DATE_ADD(ap.VisitDate, INTERVAL 21 DAY)),'%Y-%m-%d')"
+        }
+      },
+      {
+        "type": "simple_column",
+        "alias": "DifferentiatedCare",
+        "column": "ap.DifferentiatedCare"
+      },
+      {
+        "type": "simple_column",
+        "alias": "KeyPopulationType",
+        "column": "ap.KeyPopulationType"
+      },
+      {
+        "type": "simple_column",
+        "alias": "PopulationType",
+        "column": "ap.PopulationType"
+      },
+      {
+        "type": "simple_column",
+        "alias": "StabilityAssessment",
+        "column": "ap.StabilityAssessment"
+      }
+      
+  ],
+  "filters": {
+      "conditionJoinOperator": "and",
+      "conditions": [
+          {
+              "filterType": "tableColumns",
+              "conditionExpression": "SiteCode in ?",
+              "parameterName": "mflCodes"
+          },
+          {
+            "filterType": "tableColumns",
+            "conditionExpression": "DATE(ap.VisitDate) >= '1997-01-01'"
+          }
+      ]
+  }
+}
