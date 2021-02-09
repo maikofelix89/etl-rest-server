@@ -72,6 +72,8 @@ import { RetentionAppointmentTracingService } from './service/retention-appointm
 import { PatientGainLosesService } from './service/patient-gain-loses.service';
 import { PrepReminderService } from './service/prep-reminder/prep-reminder.service';
 
+var enhancedAdeherenceSessionService = require('./service/enhanced-adherence-session.service');
+
 module.exports = (function () {
   var routes = [
     {
@@ -5834,6 +5836,34 @@ module.exports = (function () {
                 reply(Boom.internal('An error occured', err));
               });
           });
+        },
+        description: 'HEI summary Patient list',
+        notes: 'Returns HEI summary patient list',
+        tags: ['api']
+      }
+    },
+    {
+      method: 'GET',
+      path: '/etl/eac-session',
+      config: {
+        auth: 'simple',
+        plugins: {},
+        handler: function (request, reply) {
+          console.log('RequestParams', request.query);
+          if (request.query.patientUuid) {
+            const patientUuid = request.query.patientUuid;
+            enhancedAdeherenceSessionService
+              .getPatientLatestEACSessionNo(patientUuid)
+              .then((result) => {
+                reply(result);
+              })
+              .catch((error) => {
+                console.log('Error', error);
+                reply(Boom.internal('An error occured', error));
+              });
+          } else {
+            reply(Boom.internal('Missing patient uuid'));
+          }
         },
         description: 'HEI summary Patient list',
         notes: 'Returns HEI summary patient list',

@@ -1426,7 +1426,7 @@
       {
         "uuid": "0b1b6194-d2d5-4e4b-9f7c-c3b778ccc354",
         "message": "Patient must have prior clinical encounter.",
-        "allowedIf": "!isFirstPMTCTVisit && !isEnrolledInViremiaPMTCT",
+        "allowedIf": "!isFirstPMTCTVisit",
         "name": "PMTCT Postnatal Return Visit",
         "encounterTypes": [
           {
