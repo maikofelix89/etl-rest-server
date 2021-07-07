@@ -74,6 +74,7 @@ import { PrepReminderService } from './service/prep-reminder/prep-reminder.servi
 
 import { HIVGainsAndLossesService } from './service/gains-and-losses/hiv-gains-losses-service';
 const cervicalCancerScreeningService = require('./service/cervical-cancer-screening-service');
+import { MOH412Service } from './service/moh-412/moh-412';
 
 module.exports = (function () {
   var routes = [
@@ -5871,6 +5872,95 @@ module.exports = (function () {
               reply(Boom.internal('An error occured', error));
             });
         }
+      }
+    },
+    {
+      method: 'GET',
+      path: '/etl/moh-412-report',
+      config: {
+        auth: 'simple',
+        plugins: {},
+        handler: function (request, reply) {
+          if (request.query.locationUuids) {
+            preRequest.resolveLocationIdsToLocationUuids(request, function () {
+              let requestParams = Object.assign(
+                {},
+                request.query,
+                request.params
+              );
+              let reportParams = etlHelpers.getReportParams(
+                'hiv-cervical-cancer-screening-monthly-report',
+                ['startDate', 'endDate', 'locationUuids'],
+                requestParams
+              );
+              console.log('ReportParams', reportParams);
+
+              const moh412Service = new MOH412Service(
+                'MOH-412-report',
+                reportParams.requestParams
+              );
+              moh412Service
+                .generateReport()
+                .then((result) => {
+                  reply(result);
+                })
+                .catch((error) => {
+                  console.error('Error: ', error);
+                  reply(error);
+                });
+            });
+          }
+        },
+        description: 'MOH-412 Report',
+        notes: 'Returns Report for HIV Cervical Cancer Screening',
+        tags: ['api']
+      }
+    },
+    {
+      method: 'GET',
+      path: '/etl/moh-412-report/patient-list',
+      config: {
+        auth: 'simple',
+        plugins: {},
+        handler: function (request, reply) {
+          if (request.query.locationUuids) {
+            request.query.reportName =
+              'hiv-cervical-cancer-screening-monthly-report';
+            preRequest.resolveLocationIdsToLocationUuids(request, function () {
+              let requestParams = Object.assign(
+                {},
+                request.query,
+                request.params
+              );
+
+              let requestCopy = _.cloneDeep(requestParams);
+              let reportParams = etlHelpers.getReportParams(
+                request.query.reportName,
+                ['startDate', 'endDate', 'locationUuids', 'locations'],
+                requestParams
+              );
+              requestCopy.locations = reportParams.requestParams.locations;
+              let moh412Service = new MOH412Service(
+                'MOH-412-report',
+                requestCopy
+              );
+              // console.log('requestParams', requestParams);
+              // console.log('reportParams', reportParams);
+
+              moh412Service
+                .getPatientListReport(requestParams)
+                .then((results) => {
+                  reply(results);
+                })
+                .catch((err) => {
+                  reply(Boom.internal('An error occured', err));
+                });
+            });
+          }
+        },
+        description: 'MOH-412 Report',
+        notes: 'Returns Report for HIV Cervical Cancer Screening',
+        tags: ['api']
       }
     }
   ];
