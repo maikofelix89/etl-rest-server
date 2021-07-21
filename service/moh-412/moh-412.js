@@ -17,6 +17,7 @@ export class MOH412Service extends MultiDatasetPatientlistReport {
       super
         .generateReport(additionalParams)
         .then((results) => {
+          // console.log('Results', results);
           if (additionalParams && additionalParams.type === 'patient-list') {
             resolve(results);
           } else {

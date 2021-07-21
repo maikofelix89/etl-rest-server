@@ -202,18 +202,25 @@ import * as patient_gains_and_losses_patient_list_template from './json-reports/
 
 //MOH-412 HIV Cervical Cancer Screening
 import * as hiv_cervical_cancer_screening_monthly_report from './json-reports/moh-412/cervical-cancer-screening-monthly-report.json';
+import * as hiv_cervical_cancer_screening_monthly_pcf_report from './json-reports/moh-412/cervical-cancer-screening-monthly-pcf-report.json';
 import * as hiv_cervical_cancer_screening_monthly_aggregate from './json-reports/hiv-cervical-cancer-screening-monthly-aggregate.json';
+import * as hiv_cervical_cancer_screening_monthly_pcf_aggregate from './json-reports/hiv-cervical-cancer-screening-monthly-pcf-aggregate.json';
 import * as hiv_cervical_cancer_screening_monthly_base from './json-reports/hiv-cervical-cancer-screening-monthly-base.json';
 import * as hiv_cervical_cancer_positive_screening_monthly_aggregate from './json-reports/hiv-cervical-cancer-positive-screening-monthly-aggregate.json';
+import * as hiv_cervical_cancer_positive_screening_monthly_pcf_aggregate from './json-reports/hiv-cervical-cancer-positive-screening-monthly-pcf-aggregate.json';
 import * as hiv_cervical_cancer_positive_screening_monthly_base from './json-reports/hiv-cervical-cancer-positive-screening-monthly-base.json';
 import * as hiv_cervical_cancer_treatment_monthly_aggregate from './json-reports/hiv-cervical-cancer-treatment-monthly-aggregate.json';
+import * as hiv_cervical_cancer_treatment_monthly_pcf_aggregate from './json-reports/hiv-cervical-cancer-treatment-monthly-pcf-aggregate.json';
 import * as hiv_cervical_cancer_treatment_monthly_base from './json-reports/hiv-cervical-cancer-treatment-monthly-base.json';
 import * as hiv_positive_cervical_cancer_screening_monthly_aggregate from './json-reports/hiv-positive-cervical-cancer-screening-monthly-aggregate.json';
+import * as hiv_positive_cervical_cancer_screening_monthly_pcf_aggregate from './json-reports/hiv-positive-cervical-cancer-screening-monthly-pcf-aggregate.json';
 import * as hiv_positive_cervical_cancer_screening_monthly_base from './json-reports/hiv-positive-cervical-cancer-screening-monthly-base.json';
 import * as hiv_cervical_cancer_screening_monthly_main_dataset_aggregate from './json-reports/hiv-cervical-cancer-screening-monthly-main-dataset-aggregate.json';
+import * as hiv_cervical_cancer_screening_monthly_main_dataset_pcf_aggregate from './json-reports/hiv-cervical-cancer-screening-monthly-main-dataset-pcf-aggregate.json';
 import * as hiv_cervical_cancer_screening_monthly_main_dataset_base from './json-reports/hiv-cervical-cancer-screening-monthly-main-dataset-base.json';
 import * as hiv_cervical_cancer_monthly_summary_lesions_base from './json-reports/hiv-cervical-cancer-monthly-summary-lesions-base.json';
 import * as hiv_cervical_cancer_monthly_summary_lesions_aggregate from './json-reports/hiv-cervical-cancer-monthly-summary-lesions-aggregate.json';
+import * as hiv_cervical_cancer_monthly_summary_lesions_pcf_aggregate from './json-reports/hiv-cervical-cancer-monthly-summary-lesions-pcf-aggregate.json';
 export class BaseMysqlReport {
   constructor(reportName, params) {
     this.reportName = reportName;
@@ -1061,10 +1068,26 @@ export class BaseMysqlReport {
             )
           });
           break;
+        case 'MOH-412-PCF-report':
+          resolve({
+            main: this.cloneJsonSchema(
+              hiv_cervical_cancer_screening_monthly_pcf_report
+            )
+          });
+          break;
         case 'hivCervicalCancerScreeningMonthlyAggregate':
           resolve({
             main: this.cloneJsonSchema(
               hiv_cervical_cancer_screening_monthly_aggregate
+            ),
+            hivCervicalCancerScreeningMonthlyBase: this.cloneJsonSchema(
+              hiv_cervical_cancer_screening_monthly_base
+            )
+          });
+        case 'hivCervicalCancerScreeningMonthlyPcfAggregate':
+          resolve({
+            main: this.cloneJsonSchema(
+              hiv_cervical_cancer_screening_monthly_pcf_aggregate
             ),
             hivCervicalCancerScreeningMonthlyBase: this.cloneJsonSchema(
               hiv_cervical_cancer_screening_monthly_base
@@ -1079,10 +1102,28 @@ export class BaseMysqlReport {
               hiv_cervical_cancer_positive_screening_monthly_base
             )
           });
+        case 'hivCervicalCancerPositiveScreeningMonthlyPcfAggregate':
+          resolve({
+            main: this.cloneJsonSchema(
+              hiv_cervical_cancer_positive_screening_monthly_pcf_aggregate
+            ),
+            hivCervicalCancerPositiveScreeningMonthlyBase: this.cloneJsonSchema(
+              hiv_cervical_cancer_positive_screening_monthly_base
+            )
+          });
         case 'hivCervicalCancerTreatmentMonthlyAggregate':
           resolve({
             main: this.cloneJsonSchema(
               hiv_cervical_cancer_treatment_monthly_aggregate
+            ),
+            hivCervicalCancerTreatmentMonthlyBase: this.cloneJsonSchema(
+              hiv_cervical_cancer_treatment_monthly_base
+            )
+          });
+        case 'hivCervicalCancerTreatmentMonthlyPcfAggregate':
+          resolve({
+            main: this.cloneJsonSchema(
+              hiv_cervical_cancer_treatment_monthly_pcf_aggregate
             ),
             hivCervicalCancerTreatmentMonthlyBase: this.cloneJsonSchema(
               hiv_cervical_cancer_treatment_monthly_base
@@ -1097,6 +1138,15 @@ export class BaseMysqlReport {
               hiv_positive_cervical_cancer_screening_monthly_base
             )
           });
+        case 'hivPositiveCervicalCancerScreeningMonthlyPcfAggregate':
+          resolve({
+            main: this.cloneJsonSchema(
+              hiv_positive_cervical_cancer_screening_monthly_pcf_aggregate
+            ),
+            hivPositiveCervicalCancerScreeningMonthlyBase: this.cloneJsonSchema(
+              hiv_positive_cervical_cancer_screening_monthly_base
+            )
+          });
         case 'hivCervicalCancerScreeningMonthlyMainDatasetAggregate':
           resolve({
             main: this.cloneJsonSchema(
@@ -1106,10 +1156,28 @@ export class BaseMysqlReport {
               hiv_cervical_cancer_screening_monthly_main_dataset_base
             )
           });
+        case 'hivCervicalCancerScreeningMonthlyMainDatasetPcfAggregate':
+          resolve({
+            main: this.cloneJsonSchema(
+              hiv_cervical_cancer_screening_monthly_main_dataset_pcf_aggregate
+            ),
+            hivCervicalCancerScreeningMonthlyMainDatasetBase: this.cloneJsonSchema(
+              hiv_cervical_cancer_screening_monthly_main_dataset_base
+            )
+          });
         case 'hivCervicalCancerMonthlySummaryLesionsAggregate':
           resolve({
             main: this.cloneJsonSchema(
               hiv_cervical_cancer_monthly_summary_lesions_aggregate
+            ),
+            hivCervicalCancerMonthlySummaryLesionsBase: this.cloneJsonSchema(
+              hiv_cervical_cancer_monthly_summary_lesions_base
+            )
+          });
+        case 'hivCervicalCancerMonthlySummaryLesionsPcfAggregate':
+          resolve({
+            main: this.cloneJsonSchema(
+              hiv_cervical_cancer_monthly_summary_lesions_pcf_aggregate
             ),
             hivCervicalCancerMonthlySummaryLesionsBase: this.cloneJsonSchema(
               hiv_cervical_cancer_monthly_summary_lesions_base

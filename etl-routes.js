@@ -5893,10 +5893,16 @@ module.exports = (function () {
                 ['startDate', 'endDate', 'locationUuids'],
                 requestParams
               );
-              console.log('ReportParams', reportParams);
+              let report = 'MOH-412-report';
+              if (request.query.locationType === 'primary_care_facility') {
+                reportParams.requestParams['primaryCareLocations'] =
+                  reportParams.requestParams.locations;
+                delete reportParams.requestParams.locations;
+                report = 'MOH-412-PCF-report';
+              }
 
               const moh412Service = new MOH412Service(
-                'MOH-412-report',
+                report,
                 reportParams.requestParams
               );
               moh412Service
@@ -5939,13 +5945,18 @@ module.exports = (function () {
                 ['startDate', 'endDate', 'locationUuids', 'locations'],
                 requestParams
               );
-              requestCopy.locations = reportParams.requestParams.locations;
-              let moh412Service = new MOH412Service(
-                'MOH-412-report',
-                requestCopy
-              );
-              // console.log('requestParams', requestParams);
-              // console.log('reportParams', reportParams);
+              let report = 'MOH-412-report';
+              if (request.query.locationType === 'primary_care_facility') {
+                requestCopy['primaryCareLocations'] =
+                  reportParams.requestParams.locations;
+                delete requestCopy.locations;
+                report = 'MOH-412-PCF-report';
+              } else {
+                requestCopy.locations = reportParams.requestParams.locations;
+              }
+
+              console.log('requestCopy', requestCopy);
+              let moh412Service = new MOH412Service(report, requestCopy);
 
               moh412Service
                 .getPatientListReport(requestParams)

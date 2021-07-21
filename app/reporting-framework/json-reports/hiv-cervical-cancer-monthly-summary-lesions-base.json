@@ -13,7 +13,7 @@
       "table": "amrs.location",
       "alias": "l",
       "join": {
-        "type": "inner",
+        "type": "left",
         "joinCondition": "c.location_id = l.location_id"
       }
     },
@@ -46,6 +46,16 @@
       "type": "simple_column",
       "alias": "primary_care_facility",
       "column": "p.name"
+    },
+    {
+      "type": "simple_column",
+      "alias": "primary_care_facility_id",
+      "column": "c.primary_care_facility"
+    },
+    {
+      "type": "simple_column",
+      "alias": "primary_care_facility_location_uuid",
+      "column": "p.uuid"
     },
     {
       "type": "simple_column",
@@ -214,6 +224,11 @@
         "filterType": "tableColumns",
         "conditionExpression": "c.location_id in ?",
         "parameterName": "locations"
+      },
+      {
+        "filterType": "tableColumns",
+        "conditionExpression": "c.primary_care_facility in ?",
+        "parameterName": "primaryCareLocations"
       },
       {
         "filterType": "tableColumns",

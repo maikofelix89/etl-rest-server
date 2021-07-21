@@ -1,188 +1,68 @@
 {
-  "name": "hivCervicalCancerScreeningMonthlyMainDatasetBase",
+  "name": "hivCervicalCancerScreeningMonthlyMainDatasetPcfAggregate",
   "version": "1.0",
-  "tag": "hiv_cervical_cancer_screening_monthly_main_dataset_base",
+  "tag": "",
   "description": "",
-  "uses": [],
+  "uses": [
+    {
+      "name": "hivCervicalCancerScreeningMonthlyMainDatasetBase",
+      "version": "1.0",
+      "type": "dataset_def"
+    }
+  ],
   "sources": [
     {
-      "table": "etl.cervical_screening_monthly_report_dataset",
-      "alias": "c"
-    },
-    {
-      "table": "amrs.location",
-      "alias": "l",
-      "join": {
-        "type": "left",
-        "joinCondition": "c.location_id = l.location_id"
-      }
-    },
-    {
-      "table": "amrs.location",
-      "alias": "p",
-      "join": {
-        "type": "left",
-        "joinCondition": "c.primary_care_facility = p.location_id"
-      }
+      "dataSet": "hivCervicalCancerScreeningMonthlyMainDatasetBase",
+      "alias": "hc"
     }
   ],
   "columns": [
     {
       "type": "simple_column",
       "alias": "person_id",
-      "column": "c.person_id"
+      "column": "hc.person_id"
     },
     {
       "type": "simple_column",
       "alias": "location_id",
-      "column": "c.location_id"
+      "column": "hc.primary_care_facility_id"
     },
     {
       "type": "simple_column",
       "alias": "location",
-      "column": "l.name"
-    },
-    {
-      "type": "simple_column",
-      "alias": "primary_care_facility",
-      "column": "p.name"
-    },
-    {
-      "type": "simple_column",
-      "alias": "primary_care_facility_id",
-      "column": "c.primary_care_facility"
-    },
-    {
-      "type": "simple_column",
-      "alias": "primary_care_facility_location_uuid",
-      "column": "p.uuid"
+      "column": "hc.primary_care_facility"
     },
     {
       "type": "simple_column",
       "alias": "location_uuid",
-      "column": "l.uuid"
+      "column": "hc.primary_care_facility_location_uuid"
     },
     {
       "type": "simple_column",
       "alias": "reporting_month",
-      "column": "DATE_FORMAT(c.encounter_datetime,'%Y-%m')"
+      "column": "hc.reporting_month"
     },
     {
       "type": "simple_column",
-      "alias": "screening_date",
-      "column": "DATE_FORMAT(c.encounter_datetime,'%Y-%m-%d')"
-    },
-    {
-      "type": "derived_column",
       "alias": "age_range",
-      "expressionType": "case_statement",
-      "expressionOptions": {
-        "caseOptions": [
-          {
-            "condition": "c.age < 25",
-            "value": "less_than_25"
-          },
-          {
-            "condition": "c.age between 25 and 49",
-            "value": "25_to_49"
-          },
-          {
-            "condition": "c.age >= 50",
-            "value": "50_and_above"
-          }
-        ]
-      }
+      "column": "hc.age_range"
     },
     {
-      "type": "derived_column",
-      "alias": "via_or_via_vili_test_result",
-      "expressionType": "case_statement",
-      "expressionOptions": {
-        "caseOptions": [
-          {
-            "condition": "c.via_or_via_vili_test_result = 1",
-            "value": "Negative"
-          },
-          {
-            "condition": "c.via_or_via_vili_test_result = 2",
-            "value": "Positive"
-          },
-          {
-            "condition": "c.via_or_via_vili_test_result = 3",
-            "value": "Suspicious of cancer"
-          }
-        ]
-      }
-    },
-    {
-      "type": "derived_column",
-      "alias": "screening_visit_type",
-      "expressionType": "case_statement",
-      "expressionOptions": {
-        "caseOptions": [
-          {
-            "condition": "c.reasons_for_current_visit = 1",
-            "value": "initial"
-          },
-          {
-            "condition": "c.reasons_for_current_visit = 2",
-            "value": "routine"
-          },
-          {
-            "condition": "c.reasons_for_current_visit = 3",
-            "value": "post_treatment"
-          },
-          {
-            "condition": "c.reasons_for_current_visit NOT IN (1,2,3)",
-            "value": "unknown"
-          }
-        ]
-      }
-    },
-    {
-      "type": "derived_column",
+      "type": "simple_column",
       "alias": "hiv_status",
-      "expressionType": "case_statement",
-      "expressionOptions": {
-        "caseOptions": [
-          {
-            "condition": "c.hiv_status = 2",
-            "value": "positive"
-          },
-          {
-            "condition": "c.hiv_status = 1",
-            "value": "negative"
-          }
-        ]
-      }
+      "column": "hc.hiv_status"
     },
     {
-      "type": "derived_column",
-      "alias": "screening_method",
-      "expressionType": "case_statement",
-      "expressionOptions": {
-        "caseOptions": [
-          {
-            "condition": "c.screening_method in (9434,10420)",
-            "value": "via_or_via_vili"
-          },
-          {
-            "condition": "c.screening_method = 885",
-            "value": "pap_smear"
-          },
-          {
-            "condition": "c.screening_method = 2322",
-            "value": "hpv"
-          }
-        ]
-      }
+      "type": "simple_column",
+      "alias": "screening_visit_type",
+      "column": "hc.screening_visit_type"
     },
     {
       "type": "derived_column",
       "alias": "screened_initial_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method in (9434,10420,885,2322) AND c.reasons_for_current_visit = 1,1,NULL)"
+        "expression": "COUNT(hc.screened_initial_visit)"
       }
     },
     {
@@ -190,7 +70,7 @@
       "alias": "screened_via_or_via_vili_initial_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method in (9434,10420) AND c.reasons_for_current_visit = 1,1,NULL)"
+        "expression": "COUNT(hc.screened_via_or_via_vili_initial_visit)"
       }
     },
     {
@@ -198,7 +78,7 @@
       "alias": "screened_via_or_via_vili_initial_visit_hiv_positive",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method in (9434,10420) AND c.reasons_for_current_visit = 1 AND c.hiv_status = 2,1,NULL)"
+        "expression": "COUNT(hc.screened_via_or_via_vili_initial_visit_hiv_positive)"
       }
     },
     {
@@ -206,7 +86,7 @@
       "alias": "screened_via_or_via_vili_initial_visit_hiv_negative",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method in (9434,10420) AND c.reasons_for_current_visit = 1 AND c.hiv_status = 1,1,NULL)"
+        "expression": "COUNT(hc.screened_via_or_via_vili_initial_visit_hiv_negative)"
       }
     },
     {
@@ -214,7 +94,7 @@
       "alias": "screened_routine_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method in (9434,10420,885,2322) AND c.reasons_for_current_visit = 2,1,NULL)"
+        "expression": "COUNT(hc.screened_routine_visit)"
       }
     },
     {
@@ -222,7 +102,7 @@
       "alias": "screened_via_or_via_vili_routine_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method in (9434,10420) AND c.reasons_for_current_visit = 2,1,NULL)"
+        "expression": "COUNT(hc.screened_via_or_via_vili_routine_visit)"
       }
     },
     {
@@ -230,7 +110,7 @@
       "alias": "screened_via_or_via_vili_routine_visit_hiv_positive",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method in (9434,10420) AND c.reasons_for_current_visit = 2 AND c.hiv_status = 2,1,NULL)"
+        "expression": "COUNT(hc.screened_via_or_via_vili_routine_visit_hiv_positive)"
       }
     },
     {
@@ -238,7 +118,7 @@
       "alias": "screened_via_or_via_vili_routine_visit_hiv_negative",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method in (9434,10420) AND c.reasons_for_current_visit = 2 AND c.hiv_status = 1,1,NULL)"
+        "expression": "COUNT(hc.screened_via_or_via_vili_routine_visit_hiv_negative)"
       }
     },
     {
@@ -246,7 +126,7 @@
       "alias": "screened_post_treatment_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method in (9434,10420,885,2322) AND c.reasons_for_current_visit = 3 ,1,NULL)"
+        "expression": "COUNT(hc.screened_post_treatment_visit)"
       }
     },
     {
@@ -254,7 +134,7 @@
       "alias": "screened_via_or_via_vili_post_treatment_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method in (9434,10420) AND c.reasons_for_current_visit = 3 ,1,NULL)"
+        "expression": "COUNT(hc.screened_via_or_via_vili_post_treatment_visit)"
       }
     },
     {
@@ -262,7 +142,7 @@
       "alias": "screened_via_or_via_vili_post_treatment_visit_hiv_positive",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method in (9434,10420) AND c.reasons_for_current_visit = 3 AND c.hiv_status = 2,1,NULL)"
+        "expression": "COUNT(hc.screened_via_or_via_vili_post_treatment_visit_hiv_positive)"
       }
     },
     {
@@ -270,7 +150,7 @@
       "alias": "screened_via_or_via_vili_post_treatment_visit_hiv_negative",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method in (9434,10420) AND c.reasons_for_current_visit = 3 AND c.hiv_status = 1,1,NULL)"
+        "expression": "COUNT(hc.screened_via_or_via_vili_post_treatment_visit_hiv_negative)"
       }
     },
     {
@@ -278,15 +158,15 @@
       "alias": "screened_positive_via_or_via_vili_initial_visit_hiv_positive",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method in (9434,10420) AND c.via_or_via_vili_test_result = 2 AND c.reasons_for_current_visit = 1 AND c.hiv_status = 2,1,NULL)"
+        "expression": "COUNT(hc.screened_positive_via_or_via_vili_initial_visit_hiv_positive)"
       }
     },
     {
       "type": "derived_column",
-      "alias": "screened_postive_via_or_via_vili_initial_visit_hiv_negative",
+      "alias": "screened_positive_via_or_via_vili_initial_visit_hiv_negative",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method in (9434,10420) AND c.via_or_via_vili_test_result = 2 AND c.reasons_for_current_visit = 1 AND c.hiv_status = 1,1,NULL)"
+        "expression": "COUNT(hc.screened_postive_via_or_via_vili_initial_visit_hiv_negative)"
       }
     },
     {
@@ -294,7 +174,7 @@
       "alias": "screened_postive_via_or_via_vili_initial_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method in (9434,10420) AND c.via_or_via_vili_test_result = 2 AND c.reasons_for_current_visit = 1 AND c.hiv_status in (1,2),1,NULL)"
+        "expression": "COUNT(hc.screened_postive_via_or_via_vili_initial_visit)"
       }
     },
     {
@@ -302,7 +182,7 @@
       "alias": "screened_positive_via_or_via_vili_routine_visit_hiv_positive",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method in (9434,10420) AND c.via_or_via_vili_test_result = 2 AND c.reasons_for_current_visit = 2 AND c.hiv_status = 2,1,NULL)"
+        "expression": "COUNT(hc.screened_positive_via_or_via_vili_routine_visit_hiv_positive)"
       }
     },
     {
@@ -310,7 +190,7 @@
       "alias": "screened_positive_via_or_via_vili_routine_visit_hiv_negative",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method in (9434,10420) AND c.via_or_via_vili_test_result = 2 AND c.reasons_for_current_visit = 2 AND c.hiv_status = 1,1,NULL)"
+        "expression": "COUNT(hc.screened_positive_via_or_via_vili_routine_visit_hiv_negative)"
       }
     },
     {
@@ -318,7 +198,7 @@
       "alias": "screened_positive_via_or_via_vili_routine_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method in (9434,10420) AND c.via_or_via_vili_test_result = 2 AND c.reasons_for_current_visit = 2 AND c.hiv_status in (1,2),1,NULL)"
+        "expression": "COUNT(hc.screened_positive_via_or_via_vili_routine_visit)"
       }
     },
     {
@@ -326,7 +206,7 @@
       "alias": "screened_positive_via_or_via_vili_post_treatment_visit_hiv_positive",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method in (9434,10420) AND c.via_or_via_vili_test_result = 2 AND c.reasons_for_current_visit = 3 AND c.hiv_status = 2 ,1,NULL)"
+        "expression": "COUNT(hc.screened_positive_via_or_via_vili_post_treatment_visit_hiv_positive)"
       }
     },
     {
@@ -334,7 +214,7 @@
       "alias": "screened_positive_via_or_via_vili_post_treatment_visit_hiv_negative",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method in (9434,10420) AND c.via_or_via_vili_test_result = 2 AND c.reasons_for_current_visit = 3 AND c.hiv_status = 1 ,1,NULL)"
+        "expression": "COUNT(hc.screened_positive_via_or_via_vili_post_treatment_visit_hiv_negative)"
       }
     },
     {
@@ -342,7 +222,7 @@
       "alias": "screened_positive_via_or_via_vili_post_treatment_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method in (9434,10420) AND c.via_or_via_vili_test_result = 2 AND c.reasons_for_current_visit = 3 AND c.hiv_status in (1,2),1,NULL)"
+        "expression": "COUNT(hc.screened_positive_via_or_via_vili_post_treatment_visit)"
       }
     },
     {
@@ -350,7 +230,7 @@
       "alias": "treatment_method_cyrotherapy_initial_visit_hiv_positive",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 2 AND c.reasons_for_current_visit = 1 AND c.hiv_status = 2,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_cyrotherapy_initial_visit_hiv_positive)"
       }
     },
     {
@@ -358,7 +238,7 @@
       "alias": "treatment_method_cyrotherapy_initial_visit_hiv_negative",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 2 AND c.reasons_for_current_visit = 1 AND c.hiv_status = 1,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_cyrotherapy_initial_visit_hiv_negative)"
       }
     },
     {
@@ -366,7 +246,7 @@
       "alias": "treatment_method_cyrotherapy_initial_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 2 AND c.reasons_for_current_visit = 1 AND c.hiv_status in (1,2),1,NULL)"
+        "expression": "COUNT(hc.treatment_method_cyrotherapy_initial_visit)"
       }
     },
     {
@@ -374,7 +254,7 @@
       "alias": "treatment_method_thermo_coagulation_initial_visit_hiv_positive",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 4 AND c.reasons_for_current_visit = 1 AND c.hiv_status = 2,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_thermo_coagulation_initial_visit_hiv_positive)"
       }
     },
     {
@@ -382,7 +262,7 @@
       "alias": "treatment_method_thermo_coagulation_initial_visit_hiv_negative",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 4 AND c.reasons_for_current_visit = 1 AND c.hiv_status = 1,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_thermo_coagulation_initial_visit_hiv_negative)"
       }
     },
     {
@@ -390,7 +270,7 @@
       "alias": "treatment_method_thermo_coagulation_initial_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 4 AND c.reasons_for_current_visit = 1 AND c.hiv_status in (1,2),1,NULL)"
+        "expression": "COUNT(hc.treatment_method_thermo_coagulation_initial_visit)"
       }
     },
     {
@@ -398,7 +278,7 @@
       "alias": "treatment_method_leep_initial_visit_hiv_positive",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 3 AND c.reasons_for_current_visit = 1 AND c.hiv_status = 2,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_leep_initial_visit_hiv_positive)"
       }
     },
     {
@@ -406,7 +286,7 @@
       "alias": "treatment_method_leep_initial_visit_hiv_negative",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 3 AND c.reasons_for_current_visit = 1 AND c.hiv_status = 1,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_leep_initial_visit_hiv_negative)"
       }
     },
     {
@@ -414,7 +294,7 @@
       "alias": "treatment_method_leep_initial_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 3 AND c.reasons_for_current_visit = 1 AND c.hiv_status in (1,2),1,NULL)"
+        "expression": "COUNT(hc.treatment_method_leep_initial_visit)"
       }
     },
     {
@@ -422,7 +302,7 @@
       "alias": "treatment_method_other_initial_visit_hiv_positive",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 5 AND c.reasons_for_current_visit = 1 AND c.hiv_status = 2,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_other_initial_visit_hiv_positive)"
       }
     },
     {
@@ -430,7 +310,7 @@
       "alias": "treatment_method_other_initial_visit_hiv_negative",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 5 AND c.reasons_for_current_visit = 1 AND c.hiv_status = 1,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_other_initial_visit_hiv_negative)"
       }
     },
     {
@@ -438,7 +318,7 @@
       "alias": "treatment_method_other_initial_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 5 AND c.reasons_for_current_visit = 1 AND c.hiv_status in (1,2),1,NULL)"
+        "expression": "COUNT(hc.treatment_method_other_initial_visit)"
       }
     },
     {
@@ -446,7 +326,7 @@
       "alias": "treatment_method_cyrotherapy_routine_visit_hiv_positive",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 2 AND c.reasons_for_current_visit = 2 AND c.hiv_status = 2,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_cyrotherapy_routine_visit_hiv_positive)"
       }
     },
     {
@@ -454,7 +334,7 @@
       "alias": "treatment_method_cyrotherapy_routine_visit_hiv_negative",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 2 AND c.reasons_for_current_visit = 2 AND c.hiv_status = 1,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_cyrotherapy_routine_visit_hiv_negative)"
       }
     },
     {
@@ -462,7 +342,7 @@
       "alias": "treatment_method_cyrotherapy_routine_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 2 AND c.reasons_for_current_visit = 2 AND c.hiv_status in (1,2),1,NULL)"
+        "expression": "COUNT(hc.treatment_method_cyrotherapy_routine_visit)"
       }
     },
     {
@@ -470,7 +350,7 @@
       "alias": "treatment_method_thermo_coagulation_routine_visit_hiv_positive",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 4 AND c.reasons_for_current_visit = 2 AND c.hiv_status = 2,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_thermo_coagulation_routine_visit_hiv_positive)"
       }
     },
     {
@@ -478,7 +358,7 @@
       "alias": "treatment_method_thermo_coagulation_routine_visit_hiv_negative",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 4 AND c.reasons_for_current_visit = 2 AND c.hiv_status = 1,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_thermo_coagulation_routine_visit_hiv_negative)"
       }
     },
     {
@@ -486,7 +366,7 @@
       "alias": "treatment_method_thermo_coagulation_routine_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 4 AND c.reasons_for_current_visit = 2 AND c.hiv_status in (1,2),1,NULL)"
+        "expression": "COUNT(hc.treatment_method_thermo_coagulation_routine_visit)"
       }
     },
     {
@@ -494,7 +374,7 @@
       "alias": "treatment_method_leep_routine_visit_hiv_positive",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 3 AND c.reasons_for_current_visit = 2 AND c.hiv_status = 2,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_leep_routine_visit_hiv_positive)"
       }
     },
     {
@@ -502,7 +382,7 @@
       "alias": "treatment_method_leep_routine_visit_hiv_negative",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 3 AND c.reasons_for_current_visit = 2 AND c.hiv_status = 1,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_leep_routine_visit_hiv_negative)"
       }
     },
     {
@@ -510,7 +390,7 @@
       "alias": "treatment_method_leep_routine_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 3 AND c.reasons_for_current_visit = 2 AND c.hiv_status in (1,2),1,NULL)"
+        "expression": "COUNT(hc.treatment_method_leep_routine_visit)"
       }
     },
     {
@@ -518,7 +398,7 @@
       "alias": "treatment_method_other_routine_visit_hiv_positive",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 5 AND c.reasons_for_current_visit = 2 AND c.hiv_status = 2,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_other_routine_visit_hiv_positive)"
       }
     },
     {
@@ -526,7 +406,7 @@
       "alias": "treatment_method_other_routine_visit_hiv_negative",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 5 AND c.reasons_for_current_visit = 2 AND c.hiv_status = 1,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_other_routine_visit_hiv_negative)"
       }
     },
     {
@@ -534,7 +414,7 @@
       "alias": "treatment_method_other_routine_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 5 AND c.reasons_for_current_visit = 2 AND c.hiv_status in (1,2),1,NULL)"
+        "expression": "COUNT(hc.treatment_method_other_routine_visit)"
       }
     },
     {
@@ -542,7 +422,7 @@
       "alias": "treatment_method_cyrotherapy_post_treatment_visit_hiv_positive",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 2 AND c.reasons_for_current_visit = 3 AND c.hiv_status = 2,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_cyrotherapy_post_treatment_visit_hiv_positive)"
       }
     },
     {
@@ -550,7 +430,7 @@
       "alias": "treatment_method_cyrotherapy_post_treatment_visit_hiv_negative",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 2 AND c.reasons_for_current_visit = 3 AND c.hiv_status = 1,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_cyrotherapy_post_treatment_visit_hiv_negative)"
       }
     },
     {
@@ -558,7 +438,7 @@
       "alias": "treatment_method_cyrotherapy_post_treatment_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 2 AND c.reasons_for_current_visit = 3 AND c.hiv_status in (1,2),1,NULL)"
+        "expression": "COUNT(hc.treatment_method_cyrotherapy_post_treatment_visit)"
       }
     },
     {
@@ -566,7 +446,7 @@
       "alias": "treatment_method_thermo_coagulation_post_treatment_visit_hiv_positive",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 4 AND c.reasons_for_current_visit = 3 AND c.hiv_status = 2,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_thermo_coagulation_post_treatment_visit_hiv_positive)"
       }
     },
     {
@@ -574,7 +454,7 @@
       "alias": "treatment_method_thermo_coagulation_post_treatment_visit_hiv_negative",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 4 AND c.reasons_for_current_visit = 3 AND c.hiv_status = 1,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_thermo_coagulation_post_treatment_visit_hiv_negative)"
       }
     },
     {
@@ -582,7 +462,7 @@
       "alias": "treatment_method_thermo_coagulation_post_treatment_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 4 AND c.reasons_for_current_visit = 3 AND c.hiv_status in (1,2),1,NULL)"
+        "expression": "COUNT(hc.treatment_method_thermo_coagulation_post_treatment_visit)"
       }
     },
     {
@@ -590,7 +470,7 @@
       "alias": "treatment_method_leep_post_treatment_visit_hiv_positive",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 3 AND c.reasons_for_current_visit = 3 AND c.hiv_status = 2,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_leep_post_treatment_visit_hiv_positive)"
       }
     },
     {
@@ -598,7 +478,7 @@
       "alias": "treatment_method_leep_post_treatment_visit_hiv_negative",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 3 AND c.reasons_for_current_visit = 3 AND c.hiv_status = 1,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_leep_post_treatment_visit_hiv_negative)"
       }
     },
     {
@@ -606,7 +486,7 @@
       "alias": "treatment_method_leep_post_treatment_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 3 AND c.reasons_for_current_visit = 3 AND c.hiv_status in (1,2),1,NULL)"
+        "expression": "COUNT(hc.treatment_method_leep_post_treatment_visit)"
       }
     },
     {
@@ -614,7 +494,7 @@
       "alias": "treatment_method_other_post_treatment_visit_hiv_positive",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 5 AND c.reasons_for_current_visit = 3 AND c.hiv_status = 2,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_other_post_treatment_visit_hiv_positive)"
       }
     },
     {
@@ -622,7 +502,7 @@
       "alias": "treatment_method_other_post_treatment_visit_hiv_negative",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 5 AND c.reasons_for_current_visit = 3 AND c.hiv_status = 1,1,NULL)"
+        "expression": "COUNT(hc.treatment_method_other_post_treatment_visit_hiv_negative)"
       }
     },
     {
@@ -630,7 +510,7 @@
       "alias": "treatment_method_other_post_treatment_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.treatment_method = 5 AND c.reasons_for_current_visit = 3 AND c.hiv_status in (1,2),1,NULL)"
+        "expression": "COUNT(hc.treatment_method_other_post_treatment_visit)"
       }
     },
     {
@@ -638,7 +518,7 @@
       "alias": "hiv_positive_screened_initial_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method IS NOT NULL AND c.reasons_for_current_visit = 1 AND c.hiv_status = 2,1,NULL)"
+        "expression": "COUNT(hc.hiv_positive_screened_initial_visit)"
       }
     },
     {
@@ -646,7 +526,7 @@
       "alias": "hiv_positive_screened_routine_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method IS NOT NULL AND c.reasons_for_current_visit = 2 AND c.hiv_status = 2,1,NULL)"
+        "expression": "COUNT(hc.hiv_positive_screened_routine_visit)"
       }
     },
     {
@@ -654,7 +534,7 @@
       "alias": "hiv_positive_screened_post_treatment_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method IS NOT NULL AND c.reasons_for_current_visit = 3 AND c.hiv_status = 2,1,NULL)"
+        "expression": "COUNT(hc.hiv_positive_screened_post_treatment_visit)"
       }
     },
     {
@@ -662,7 +542,7 @@
       "alias": "screened_via_or_via_vili_all_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method in (9434,10420),1,NULL)"
+        "expression": "COUNT(hc.screened_via_or_via_vili_all_visit)"
       }
     },
     {
@@ -670,7 +550,7 @@
       "alias": "screened_positive_via_or_via_vili_all_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method in (9434,10420) AND c.via_or_via_vili_test_result = 2 AND c.hiv_status in (1,2),1,NULL)"
+        "expression": "COUNT(hc.screened_positive_via_or_via_vili_all_visit)"
       }
     },
     {
@@ -678,7 +558,7 @@
       "alias": "hiv_positive_screened_all_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.screening_method IS NOT NULL AND c.hiv_status = 2,1,NULL)"
+        "expression": "COUNT(hc.hiv_positive_screened_all_visit)"
       }
     },
     {
@@ -686,7 +566,7 @@
       "alias": "hiv_positive_via_or_via_vili_suspicious_lesion_initial_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.via_or_via_vili_test_result = 3 AND c.hiv_status = 2 AND c.reasons_for_current_visit = 1,1,NULL)"
+        "expression": "COUNT(hc.hiv_positive_via_or_via_vili_suspicious_lesion_initial_visit)"
       }
     },
     {
@@ -694,7 +574,7 @@
       "alias": "hiv_negative_via_or_via_vili_suspicious_lesion_initial_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.via_or_via_vili_test_result = 3 AND c.hiv_status = 1 AND c.reasons_for_current_visit = 1,1,NULL)"
+        "expression": "COUNT(hc.hiv_negative_via_or_via_vili_suspicious_lesion_initial_visit)"
       }
     },
     {
@@ -702,7 +582,7 @@
       "alias": "via_or_via_vili_suspicious_lesion_initial_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.via_or_via_vili_test_result = 3 AND c.reasons_for_current_visit = 1,1,NULL)"
+        "expression": "COUNT(hc.via_or_via_vili_suspicious_lesion_initial_visit)"
       }
     },
     {
@@ -710,7 +590,7 @@
       "alias": "hiv_positive_via_or_via_vili_suspicious_lesion_routine_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.via_or_via_vili_test_result = 3 AND c.hiv_status = 2 AND c.reasons_for_current_visit = 2,1,NULL)"
+        "expression": "COUNT(hc.hiv_positive_via_or_via_vili_suspicious_lesion_routine_visit)"
       }
     },
     {
@@ -718,7 +598,7 @@
       "alias": "hiv_negative_via_or_via_vili_suspicious_lesion_routine_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.via_or_via_vili_test_result = 3 AND c.hiv_status = 1 AND c.reasons_for_current_visit = 2,1,NULL)"
+        "expression": "COUNT(hc.hiv_negative_via_or_via_vili_suspicious_lesion_routine_visit)"
       }
     },
     {
@@ -726,7 +606,7 @@
       "alias": "via_or_via_vili_suspicious_lesion_routine_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.via_or_via_vili_test_result = 3 AND c.reasons_for_current_visit = 2,1,NULL)"
+        "expression": "COUNT(hc.via_or_via_vili_suspicious_lesion_routine_visit)"
       }
     },
     {
@@ -734,7 +614,7 @@
       "alias": "hiv_positive_via_or_via_vili_suspicious_lesion_post_treatment_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.via_or_via_vili_test_result = 3 AND c.hiv_status = 2 AND c.reasons_for_current_visit = 3,1,NULL)"
+        "expression": "COUNT(hc.hiv_positive_via_or_via_vili_suspicious_lesion_post_treatment_visit)"
       }
     },
     {
@@ -742,7 +622,7 @@
       "alias": "hiv_negative_via_or_via_vili_suspicious_lesion_post_treatment_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.via_or_via_vili_test_result = 3 AND c.hiv_status = 1 AND c.reasons_for_current_visit = 3,1,NULL)"
+        "expression": "COUNT(hc.hiv_negative_via_or_via_vili_suspicious_lesion_post_treatment_visit)"
       }
     },
     {
@@ -750,7 +630,7 @@
       "alias": "via_or_via_vili_suspicious_lesion_post_treatment_visit",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.via_or_via_vili_test_result = 3 AND c.reasons_for_current_visit = 3,1,NULL)"
+        "expression": "COUNT(hc.via_or_via_vili_suspicious_lesion_post_treatment_visit)"
       }
     },
     {
@@ -758,70 +638,33 @@
       "alias": "via_or_via_vili_suspicious_lesion",
       "expressionType": "simple_expression",
       "expressionOptions": {
-        "expression": "IF(c.via_or_via_vili_test_result = 3,1,NULL)"
-      }
-    },
-    {
-      "type": "derived_column",
-      "alias": "treatment_method",
-      "expressionType": "case_statement",
-      "expressionOptions": {
-        "caseOptions": [
-          {
-            "condition": "c.treatment_method = 1",
-            "value": "None"
-          },
-          {
-            "condition": "c.treatment_method = 2",
-            "value": "Cryotherapy"
-          },
-          {
-            "condition": "c.treatment_method = 3",
-            "value": "LEEP"
-          },
-          {
-            "condition": "c.treatment_method = 4",
-            "value": "Thermocoagulation"
-          },
-          {
-            "condition": "c.treatment_method = 5",
-            "value": "Other"
-          }
-        ]
+        "expression": "COUNT(hc.via_or_via_vili_suspicious_lesion)"
       }
     }
   ],
-  "filters": {
-    "conditionJoinOperator": "and",
-    "conditions": [
-      {
-        "filterType": "tableColumns",
-        "conditionExpression": "c.endDate <= ?",
-        "parameterName": "endDate"
-      },
-      {
-        "filterType": "tableColumns",
-        "conditionExpression": "c.endDate >= ?",
-        "parameterName": "startDate"
-      },
-      {
-        "filterType": "tableColumns",
-        "conditionExpression": "c.location_id in ?",
-        "parameterName": "locations"
-      },
-      {
-        "filterType": "tableColumns",
-        "conditionExpression": "c.primary_care_facility in ?",
-        "parameterName": "primaryCareLocations"
-      },
-      {
-        "filterType": "tableColumns",
-        "conditionExpression": "c.screened_this_month_for_cervical_cancer = 1"
-      }
-    ]
-  },
   "groupBy": {
     "groupParam": "groupByParam",
-    "columns": ["person_id"]
+    "columns": ["hc.reporting_month", "hc.primary_care_facility_id"],
+    "excludeParam": "excludeParam"
+  },
+  "transFormDirectives": {
+    "joinColumn": "location_id",
+    "skipColumns": [],
+    "disaggregationColumns": []
+  },
+  "dynamicJsonQueryGenerationDirectives": {
+    "patientListGenerator": {
+      "useTemplate": "combined_breast_cervical_cancer_patient_list_template",
+      "useTemplateVersion": "1.0",
+      "generatingDirectives": {
+        "joinDirectives": {
+          "joinType": "INNER",
+          "joinCondition": "<<base_column>> = <<template_column>>",
+          "baseColumn": "person_id",
+          "templateColumn": "person_id"
+        }
+      },
+      "skipParams": []
+    }
   }
 }
